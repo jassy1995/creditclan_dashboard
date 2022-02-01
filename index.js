@@ -57,7 +57,7 @@ app.post("/api/approve", async (req, res) => {
         approval_id: null,
         restaurant_id,
         is_approved: "0",
-        comments:[]
+        comments: null,
       });
     const ch = await Approval.findOne({ where: { restaurant_id } });
     if (ch.is_approved === "0") {
@@ -101,7 +101,6 @@ app.post("/api/comment", async (req, res) => {
   //  let checkRes =  await Approval.findOne({
   //     where: { restaurant_id },
   //   });
-
   //   if(checkRes.comments  !== null && checkRes.comments !== undefined ){
   //      await Approval.update(
   //       { comments: [...checkRes.comments,comment] },
@@ -120,7 +119,6 @@ app.post("/api/comment", async (req, res) => {
   //   return res.status(500).json({ error, message: "error occur" });
   // }
 });
-
 
 const PORT = process.env.PORT || 2022;
 app.listen(PORT, () => {
