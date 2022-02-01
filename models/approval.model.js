@@ -22,9 +22,8 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
       type: DataTypes.TEXT,
     },
     comments: {
-      type: DataTypes.JSON,
+      type: DataTypes.TEXT,
     },
-
   });
 
 module.exports = Restaurant;
