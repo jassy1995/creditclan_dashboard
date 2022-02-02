@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { Restaurant, Approval, sequelize } = require("./models");
+const { Restaurant, Approval, Comment, sequelize } = require("./models");
 
 // require("dotenv").config();
 sequelize.sync().then(() => {
@@ -95,28 +95,20 @@ app.post("/api/approve", async (req, res) => {
 });
 
 app.post("/api/comment", async (req, res) => {
-  // const { comment, restaurant_id } = req.body;
-  // try {
-  //  let checkRes =  await Approval.findOne({
-  //     where: { restaurant_id },
-  //   });
-  //   if(checkRes.comments  !== null && checkRes.comments !== undefined ){
-  //      await Approval.update(
-  //       { comments: [...checkRes.comments,comment] },
-  //       { where: { restaurant_id } }
-  //     );
-  //     return res.json("success")
-  //   }else if(checkRes.comment === null){
-  //      await Approval.update(
-  //       { comments: [comment] },
-  //       { where: { restaurant_id } }
-  //     );
-  //   }
-  //   return res.json("success")
-  // } catch (error) {
-  //   console.log(error);
-  //   return res.status(500).json({ error, message: "error occur" });
-  // }
+  const { comment, user_id, restaurant_id } = req.body;
+  try {
+    const result = await Comment.create({
+      comment,
+      user_id,
+      restaurant_id,
+      date_added: Date.now(),
+    });
+    if (result.comment) return res.json("sent");
+    else return res.json("sending failed");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
 });
 
 const PORT = process.env.PORT || 2022;
