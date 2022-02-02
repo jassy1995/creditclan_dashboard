@@ -86,8 +86,8 @@ app.post("/api/approve", async (req, res) => {
         where: { id: restaurant_id },
       });
       return res.json({ result: "2", restaurant });
-    } else if (ch.is_approved?.toString() === "2") {
-      return res.json({ result: "done", resId: restaurant_id });
+    } else if (ch?.is_approved === "2") {
+      return res.json({ result: "done", restaurant_id });
     }
   } catch (error) {
     console.log(error);

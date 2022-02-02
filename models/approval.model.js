@@ -19,7 +19,7 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
       type: DataTypes.DATEONLY,
     },
     is_approved: {
-      type: DataTypes.TEXT,
+      type: DataTypes.STRING,
     },
     comments: {
       type: DataTypes.TEXT,
