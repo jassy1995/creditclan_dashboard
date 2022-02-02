@@ -56,13 +56,25 @@ app.post("/api/approve", async (req, res) => {
         user_id: null,
         approval_id: null,
         restaurant_id,
-        is_approved: "0",
-        comments: null,
+        is_approved: "-1",
       });
     const ch = await Approval.findOne({ where: { restaurant_id } });
-    if (ch.is_approved === "0") {
+    if (ch.is_approved === "-1") {
       await Approval.update(
-        { user_id, is_approved: "1", date: Date.now() },
+        { user_id, is_approved: "0", date: Date.now() },
+        { where: { restaurant_id } }
+      );
+      await Restaurant.update(
+        { is_approved: "0" },
+        { where: { id: restaurant_id } }
+      );
+      let restaurant = await Restaurant.findOne({
+        where: { id: restaurant_id },
+      });
+      return res.json({ result: "0", restaurant });
+    } else if (ch.is_approved === "0") {
+      await Approval.update(
+        { is_approved: "1", approval_id: user_id },
         { where: { restaurant_id } }
       );
       await Restaurant.update(
@@ -73,20 +85,7 @@ app.post("/api/approve", async (req, res) => {
         where: { id: restaurant_id },
       });
       return res.json({ result: "1", restaurant });
-    } else if (ch.is_approved === "1") {
-      await Approval.update(
-        { is_approved: "2", approval_id: user_id },
-        { where: { restaurant_id } }
-      );
-      await Restaurant.update(
-        { is_approved: "2" },
-        { where: { id: restaurant_id } }
-      );
-      let restaurant = await Restaurant.findOne({
-        where: { id: restaurant_id },
-      });
-      return res.json({ result: "2", restaurant });
-    } else if (ch?.is_approved === "2") {
+    } else if (ch?.is_approved === "1") {
       return res.json({ result: "done", restaurant_id });
     }
   } catch (error) {
