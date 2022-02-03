@@ -1,7 +1,14 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { Restaurant, Approval, Comment, sequelize } = require("./models");
+const {
+  Restaurant,
+  Approval,
+  Comment,
+  CommentHouse,
+  CommentRequest,
+  sequelize,
+} = require("./models");
 
 // require("dotenv").config();
 sequelize.sync().then(() => {
@@ -101,6 +108,40 @@ app.post("/api/comment", async (req, res) => {
       comment,
       user_id,
       restaurant_id,
+      date_added: Date.now(),
+    });
+    if (result.comment) return res.json("sent");
+    else return res.json("sending failed");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
+app.post("/api/comment-request", async (req, res) => {
+  const { comment, user_id, request_id } = req.body;
+  try {
+    const result = await CommentRequest.create({
+      comment,
+      user_id,
+      request_id,
+      date_added: Date.now(),
+    });
+    if (result.comment) return res.json("sent");
+    else return res.json("sending failed");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
+app.post("/api/comment-house-list", async (req, res) => {
+  const { comment, user_id, house_id } = req.body;
+  try {
+    const result = await CommentHouse.create({
+      comment,
+      user_id,
+      house_id,
       date_added: Date.now(),
     });
     if (result.comment) return res.json("sent");

@@ -16,6 +16,24 @@ const Restaurant = require("./restaurant.model")(
   DataTypes,
   Sequelize
 );
+
 const Approval = require("./approval.model")(sequelize, DataTypes, Sequelize);
 const Comment = require("./comment.model")(sequelize, DataTypes, Sequelize);
-module.exports = { Restaurant, Approval, Comment, sequelize };
+const CommentHouse = require("./comment-house.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+const CommentRequest = require("./comment-request.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+module.exports = {
+  Restaurant,
+  Approval,
+  Comment,
+  CommentRequest,
+  CommentHouse,
+  sequelize,
+};
