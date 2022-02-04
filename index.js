@@ -7,6 +7,7 @@ const {
   Comment,
   CommentHouse,
   CommentRequest,
+  ListHouse,
   sequelize,
 } = require("./models");
 
@@ -148,6 +149,18 @@ app.post("/api/comment-house-list", async (req, res) => {
     else return res.json("sending failed");
   } catch (error) {
     console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
+app.get("/api/house-list", async (req, res) => {
+  try {
+    let results = await ListHouse.findAll({
+      offset: req.body.start,
+      limit: 20,
+    });
+    return res.json(results);
+  } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
 });
