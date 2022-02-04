@@ -9,6 +9,7 @@ const {
   CommentRequest,
   ListHouse,
   sequelize,
+  ApproveHouse,
 } = require("./models");
 
 // require("dotenv").config();
@@ -172,6 +173,49 @@ app.post("/api/house-list/searchItem", async (req, res) => {
     });
     return res.json(results);
   } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
+app.post("/api/house-approve", async (req, res) => {
+  const { user_id, house_id } = req.body;
+  try {
+    let checkUser = await ApproveHouse.findOne({
+      where: { house_id },
+    });
+    if (checkUser === null)
+      await ApproveHouse.create({
+        bm_id: null,
+        manager_id: null,
+        house_id,
+        is_approved: "-1",
+      });
+    const ch = await ApproveHouse.findOne({ where: { house_id } });
+    if (ch.is_approved == "-1") {
+      await ApproveHouse.update(
+        { bm_id: user_id, is_approved: "0", date: Date.now() },
+        { where: { house_id } }
+      );
+      await ListHouse.update({ is_approved: "0" }, { where: { id: house_id } });
+      let house = await ListHouse.findOne({
+        where: { id: house_id },
+      });
+      return res.json({ result: "0", house });
+    } else if (ch.is_approved == "0") {
+      await ApproveHouse.update(
+        { is_approved: "1", manager_id: user_id },
+        { where: { house_id } }
+      );
+      await ListHouse.update({ is_approved: "1" }, { where: { id: house_id } });
+      let house = await ListHouse.findOne({
+        where: { id: house_id },
+      });
+      return res.json({ result: "1", house });
+    } else if (ch?.is_approved == "1") {
+      return res.json({ result: "done", house_id });
+    }
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 });
