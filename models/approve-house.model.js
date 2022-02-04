@@ -23,9 +23,6 @@ const ApproveHouse = (sequelize, DataTypes, Sequelize) =>
       is_approved: {
         type: DataTypes.STRING,
       },
-      comments: {
-        type: DataTypes.TEXT,
-      },
     },
     { timestamps: false }
   );
