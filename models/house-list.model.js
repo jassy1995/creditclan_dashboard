@@ -66,7 +66,7 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
       toilet: {
         type: DataTypes.TEXT,
       },
-      gate_security: {
+      gated_security: {
         type: DataTypes.TEXT,
       },
       water: {
