@@ -153,11 +153,22 @@ app.post("/api/comment-house-list", async (req, res) => {
   }
 });
 
-app.get("/api/house-list", async (req, res) => {
+app.post("/api/house-list", async (req, res) => {
   try {
     let results = await ListHouse.findAll({
       offset: req.body.start,
       limit: 20,
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
+app.post("/api/house-list/searchItem", async (req, res) => {
+  try {
+    let results = await ListHouse.findAll({
+      where: { address: req.body.searchItem?.toLowerCase() },
     });
     return res.json(results);
   } catch (error) {
