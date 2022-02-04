@@ -111,6 +111,9 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
       picture: {
         type: DataTypes.TEXT,
       },
+      is_approved: {
+        type: DataTypes.STRING,
+      },
     },
     { timestamps: false }
   );
