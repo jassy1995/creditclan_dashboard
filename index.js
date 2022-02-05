@@ -4,7 +4,7 @@ const cors = require("cors");
 const {
   Restaurant,
   ApproveRestaurant,
-  Comment,
+  CommentRestaurant,
   CommentHouse,
   CommentRequest,
   ListHouse,
@@ -65,12 +65,13 @@ app.post("/api/approve", async (req, res) => {
         bm_id: null,
         manager_id: null,
         restaurant_id,
+        date: null,
         is_approved: "-1",
       });
     const ch = await ApproveRestaurant.findOne({ where: { restaurant_id } });
     if (ch.is_approved === "-1") {
       await ApproveRestaurant.update(
-        { bm_id, is_approved: "0", date: Date.now() },
+        { bm_id: user_id, is_approved: "0", date: Date.now() },
         { where: { restaurant_id } }
       );
       await Restaurant.update(
@@ -106,7 +107,7 @@ app.post("/api/approve", async (req, res) => {
 app.post("/api/comment", async (req, res) => {
   const { comment, user_id, restaurant_id } = req.body;
   try {
-    const result = await Comment.create({
+    const result = await CommentRestaurant.create({
       comment,
       user_id,
       restaurant_id,
@@ -188,6 +189,7 @@ app.post("/api/house-approve", async (req, res) => {
         bm_id: null,
         manager_id: null,
         house_id,
+        date: null,
         is_approved: "-1",
       });
     const ch = await ApproveHouse.findOne({ where: { house_id } });
