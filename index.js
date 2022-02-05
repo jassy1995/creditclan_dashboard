@@ -3,7 +3,7 @@ const app = express();
 const cors = require("cors");
 const {
   Restaurant,
-  Approval,
+  ApproveRestaurant,
   Comment,
   CommentHouse,
   CommentRequest,
@@ -57,20 +57,20 @@ app.post("/api/restaurant-detail/searchItem", async (req, res) => {
 app.post("/api/approve", async (req, res) => {
   const { user_id, restaurant_id } = req.body;
   try {
-    let checkUser = await Approval.findOne({
+    let checkUser = await ApproveRestaurant.findOne({
       where: { restaurant_id },
     });
     if (checkUser === null)
-      await Approval.create({
-        user_id: null,
-        approval_id: null,
+      await ApproveRestaurant.create({
+        bm_id: null,
+        manager_id: null,
         restaurant_id,
         is_approved: "-1",
       });
-    const ch = await Approval.findOne({ where: { restaurant_id } });
+    const ch = await ApproveRestaurant.findOne({ where: { restaurant_id } });
     if (ch.is_approved === "-1") {
-      await Approval.update(
-        { user_id, is_approved: "0", date: Date.now() },
+      await ApproveRestaurant.update(
+        { bm_id, is_approved: "0", date: Date.now() },
         { where: { restaurant_id } }
       );
       await Restaurant.update(
@@ -82,8 +82,8 @@ app.post("/api/approve", async (req, res) => {
       });
       return res.json({ result: "0", restaurant });
     } else if (ch.is_approved === "0") {
-      await Approval.update(
-        { is_approved: "1", approval_id: user_id },
+      await ApproveRestaurant.update(
+        { is_approved: "1", manager_id: user_id },
         { where: { restaurant_id } }
       );
       await Restaurant.update(
@@ -110,7 +110,7 @@ app.post("/api/comment", async (req, res) => {
       comment,
       user_id,
       restaurant_id,
-      date_added: Date.now(),
+      date: Date.now(),
     });
     if (result.comment) return res.json("sent");
     else return res.json("sending failed");
@@ -127,7 +127,7 @@ app.post("/api/comment-request", async (req, res) => {
       comment,
       user_id,
       request_id,
-      date_added: Date.now(),
+      date: Date.now(),
     });
     if (result.comment) return res.json("sent");
     else return res.json("sending failed");
@@ -144,7 +144,7 @@ app.post("/api/comment-house-list", async (req, res) => {
       comment,
       user_id,
       house_id,
-      date_added: Date.now(),
+      date: Date.now(),
     });
     if (result.comment) return res.json("sent");
     else return res.json("sending failed");

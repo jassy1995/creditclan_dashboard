@@ -1,6 +1,6 @@
-const CommentHouse = (sequelize, DataTypes, Sequelize) =>
+const ApproveRestaurant = (sequelize, DataTypes, Sequelize) =>
   sequelize.define(
-    "comment_house",
+    "approve_restaurant",
     {
       id: {
         type: DataTypes.INTEGER,
@@ -8,21 +8,23 @@ const CommentHouse = (sequelize, DataTypes, Sequelize) =>
         allowNull: false,
         autoIncrement: true,
       },
-      user_id: {
+      manager_id: {
         type: DataTypes.TEXT,
       },
-      house_id: {
+      bm_id: {
         type: DataTypes.TEXT,
       },
-      comment: {
+      restaurant_id: {
         type: DataTypes.TEXT,
       },
-
       date: {
         type: DataTypes.DATEONLY,
+      },
+      is_approved: {
+        type: DataTypes.STRING,
       },
     },
     { timestamps: false }
   );
 
-module.exports = CommentHouse;
+module.exports = ApproveRestaurant;
