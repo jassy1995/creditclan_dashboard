@@ -222,6 +222,21 @@ app.post("/api/house-approve", async (req, res) => {
   }
 });
 
+app.post("/api/update-restaurant-record", async (req, res) => {
+  try {
+    let { id, ...others } = req.body;
+    await Restaurant.update(others, {
+      where: { id },
+    });
+    let response = await Restaurant.findOne({
+      where: { id },
+    });
+    return res.json(response);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+});
+
 const PORT = process.env.PORT || 2022;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);
