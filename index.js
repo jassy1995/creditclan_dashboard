@@ -196,7 +196,7 @@ app.post("/api/house-approve", async (req, res) => {
     if (ch.is_approved == "-1") {
       await ApproveHouse.update(
         { bm_id: user_id, is_approved: "0", date: Date.now() },
-        { where: { house_id } }
+        +{ where: { house_id } }
       );
       await ListHouse.update({ is_approved: "0" }, { where: { id: house_id } });
       let house = await ListHouse.findOne({
