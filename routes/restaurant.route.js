@@ -1,17 +1,14 @@
 const express = require("express");
-const {
-  getAllRestaurants,
-  getSearchRestaurants,
-  approveRestaurants,
-  commentRestaurantMethod,
-  updateRestaurantRecord,
-} = require("../controllers/restaurant.controller");
+const Controller = require("../controllers/restaurant.controller");
 const router = express.Router();
 
-router.post("/api/restaurant-detail", getAllRestaurants);
-router.post("/api/restaurant-detail/searchItem", getSearchRestaurants);
-router.post("/api/approve", approveRestaurants);
-router.post("/api/comment", commentRestaurantMethod);
-router.post("/api/update-restaurant-record", updateRestaurantRecord);
+router.post("/api/restaurant-detail", Controller.getAllRestaurants);
+router.post(
+  "/api/restaurant-detail/searchItem",
+  restaurantController.getSearchRestaurants
+);
+router.post("/api/approve", Controller.approveRestaurants);
+router.post("/api/comment", Controller.commentRestaurantMethod);
+router.post("/api/update-restaurant-record", Controller.updateRestaurantRecord);
 
 module.exports = router;
