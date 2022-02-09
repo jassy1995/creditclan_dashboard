@@ -27,7 +27,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(restaurantRoutes);
 app.use(houseRoutes);
-app.use(rentRequestRoute);
+// app.use(rentRequestRoute);
 // app.get("/api/restaurant-all", async (req, res) => {
 //   try {
 //     let results = await Restaurant.findAll();
