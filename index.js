@@ -37,7 +37,10 @@ app.post("/api/restaurant-detail", async (req, res) => {
       offset: req.body.start,
       limit: 20,
     });
-    return res.json(results);
+    let firstToShow = results.filter((i) => i.is_approved == "0");
+    let others = results.filter((x) => x.is_approved == "-1");
+    let fi = firstToShow.concat(others);
+    return res.json(fi);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
