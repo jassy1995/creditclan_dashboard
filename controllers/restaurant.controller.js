@@ -27,7 +27,7 @@ exports.getSearchRestaurants = async (req, res) => {
   }
 };
 
-exports.approveRestaurant = async (req, res) => {
+exports.approveRestaurants = async (req, res) => {
   const { user_id, restaurant_id } = req.body;
   try {
     let checkUser = await ApproveRestaurant.findOne({
