@@ -37,10 +37,14 @@ app.post("/api/restaurant-detail", async (req, res) => {
       offset: req.body.start,
       limit: 20,
     });
-    let firstToShow = results.filter((i) => i.is_approved == "0");
-    let others = results.filter((x) => x.is_approved == "-1");
-    let fi = firstToShow.concat(others);
-    return res.json(fi);
+    if (req.body.loginId === "5980") {
+      let firstToShow = results.filter((i) => i.is_approved == "0");
+      let others = results.filter((x) => x.is_approved == "-1");
+      let fi = firstToShow.concat(others);
+      return res.json(fi);
+    } else {
+      return res.json(results);
+    }
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
