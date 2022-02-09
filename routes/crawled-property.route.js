@@ -1,5 +1,5 @@
 const express = require("express");
-const controller = require("../controllers/crawled-property.controller");
+let controller = require("../controllers/crawled-property.controller");
 const router = express.Router();
 
 router.post("/api/list-crawled-properties", controller.getAllProperty);
