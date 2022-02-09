@@ -3,6 +3,7 @@ const {
   getAllHouse,
   getSearchHouse,
   approveHouse,
+  commentHouseMethod,
 } = require("../controllers/house.controller");
 const router = express.Router();
 
