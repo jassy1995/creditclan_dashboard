@@ -38,6 +38,7 @@ app.post("/api/restaurant-detail", async (req, res) => {
       limit: 20,
     });
     if (req.body.loginId == "5980") {
+      console.log(req.body.loginId == "5980");
       let firstToShow = results.filter((i) => i.is_approved == "0");
       let others = results.filter((x) => x.is_approved == "-1");
       let fi = firstToShow.concat(others);
