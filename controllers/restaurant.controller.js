@@ -68,7 +68,7 @@ exports.approveRestaurants = async (req, res) => {
         where: { id: restaurant_id },
       });
       return res.json({ result: "1", restaurant });
-    } else if (ch?.is_approved === "1") {
+    } else if (ch?.is_approved == "1") {
       return res.json({ result: "done", restaurant_id });
     }
   } catch (error) {

@@ -1,0 +1,9 @@
+const express = require("express");
+const controller = require("../controllers/crawled-property.controller");
+const router = express.Router();
+
+router.post("/api/list-crawled-properties", controller.getAllProperty);
+router.post("/api/list-search-property", controller.searchProperty);
+router.post("/api/approve-property", controller.approveProperty);
+
+module.exports = router;

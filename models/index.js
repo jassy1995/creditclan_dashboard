@@ -46,7 +46,19 @@ const CommentRequest = require("./comment-request.model")(
   DataTypes,
   Sequelize
 );
+const CrawledProperty = require("./crawled-property.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+const ApproveCrawledProperty = require("./approve-crawled-property.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  ApproveCrawledProperty,
+  CrawledProperty,
   ApproveHouse,
   Restaurant,
   ApproveRestaurant,
