@@ -5,7 +5,7 @@ const router = express.Router();
 router.post("/api/restaurant-detail", Controller.getAllRestaurants);
 router.post(
   "/api/restaurant-detail/searchItem",
-  restaurantController.getSearchRestaurants
+  Controller.getSearchRestaurants
 );
 router.post("/api/approve", Controller.approveRestaurants);
 router.post("/api/comment", Controller.commentRestaurantMethod);
