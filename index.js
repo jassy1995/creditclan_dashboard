@@ -14,7 +14,7 @@ const {
 
 const restaurantRoutes = require("./routes/restaurant.route");
 const houseRoutes = require("./routes/house.route");
-const rentRequestRoute = require("./routes/rent-request.route");
+// const rentRequestRoute = require("./routes/rent-request.route");
 
 // require("dotenv").config();
 sequelize.sync().then(() => {
