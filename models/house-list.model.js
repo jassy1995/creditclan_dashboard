@@ -9,7 +9,7 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
         autoIncrement: true,
       },
       date_added: {
-        type: DataTypes.TEXT,
+        type: DataTypes.DATEONLY,
       },
       date_modified: {
         type: DataTypes.TEXT,

@@ -112,8 +112,11 @@ exports.approveProperty = async (req, res) => {
       } = await CrawledProperty.findOne({
         where: { id: property_id },
       });
+      let jk = await ApproveCrawledProperty.findOne({
+        where: { property_id },
+      });
       let saveData = {
-        date_added: Date.now(),
+        date_added: jk.date,
         address,
         rent_amount: price,
         rooms: beds,
