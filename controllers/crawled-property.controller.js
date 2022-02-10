@@ -131,7 +131,11 @@ exports.approveProperty = async (req, res) => {
 
       await ListHouse.create(saveData);
 
-      return res.json("done");
+      let property = await CrawledProperty.findOne({
+        where: { id: property_id },
+      });
+
+      return res.json({ result: "done", property });
     }
   } catch (error) {
     console.log(error);
