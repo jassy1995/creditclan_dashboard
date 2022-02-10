@@ -4,6 +4,23 @@ const {
   ListHouse,
 } = require("../models");
 
+exports.iniTializerFunction = async (req, res) => {
+  try {
+    await CrawledProperty.update(
+      {
+        is_initialized: "1",
+      },
+      { where: { id: req.body.property_id } }
+    );
+    let results = await CrawledProperty.findOne({
+      where: { id: req.body.property_id },
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.getAllProperty = async (req, res) => {
   try {
     let results = await CrawledProperty.findAll({

@@ -50,6 +50,9 @@ const CrawledProperty = (sequelize, DataTypes, Sequelize) =>
       is_approved: {
         type: DataTypes.STRING,
       },
+      is_initialized: {
+        type: DataTypes.STRING,
+      },
     },
     { timestamps: false }
   );
