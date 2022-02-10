@@ -131,7 +131,7 @@ exports.approveProperty = async (req, res) => {
 
       await ListHouse.create(saveData);
 
-      return res.json({ result: "done" });
+      return res.json("done");
     }
   } catch (error) {
     console.log(error);
