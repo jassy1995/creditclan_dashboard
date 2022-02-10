@@ -44,7 +44,9 @@ const CrawledProperty = (sequelize, DataTypes, Sequelize) =>
       duration: {
         type: DataTypes.TEXT,
       },
-
+      PID: {
+        type: DataTypes.TEXT,
+      },
       is_approved: {
         type: DataTypes.STRING,
       },
