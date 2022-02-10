@@ -49,7 +49,7 @@ exports.approveProperty = async (req, res) => {
         is_approved: "-2",
       });
     const ch = await ApproveCrawledProperty.findOne({
-      where: { restaurant_id },
+      where: { property_id },
     });
     if (ch.is_approved === "-2") {
       await ApproveCrawledProperty.update(
