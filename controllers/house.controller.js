@@ -83,3 +83,18 @@ exports.commentHouseMethod = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+
+exports.updateHouseRecord = async (req, res) => {
+  try {
+    let { id, ...others } = req.body;
+    await ListHouse.update(others, {
+      where: { id },
+    });
+    let response = await ListHouse.findOne({
+      where: { id },
+    });
+    return res.json(response);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
