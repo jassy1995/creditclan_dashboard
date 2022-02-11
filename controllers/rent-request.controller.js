@@ -10681,7 +10681,7 @@ exports.createAgent = async (req, res) => {
   ];
 
   try {
-    data.forEach(function (value, index) {
+    data.forEach(async (value, index) => {
       await AgentDetail.create(value);
     });
     return res.json("done");
