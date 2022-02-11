@@ -56,7 +56,14 @@ const ApproveCrawledProperty = require("./approve-crawled-property.model")(
   DataTypes,
   Sequelize
 );
+
+const AgentDetail = require("./agent-detail.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  AgentDetail,
   ApproveCrawledProperty,
   CrawledProperty,
   ApproveHouse,
