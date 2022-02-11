@@ -148,6 +148,11 @@ exports.approveProperty = async (req, res) => {
 
       await ListHouse.create(saveData);
 
+      await CrawledProperty.update(
+        { published: "1" },
+        { where: { id: property_id } }
+      );
+
       let property = await CrawledProperty.findOne({
         where: { id: property_id },
       });
