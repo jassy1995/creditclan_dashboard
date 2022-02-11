@@ -1,4 +1,10 @@
-const { ListHouse, ApproveHouse, CommentHouse } = require("../models");
+const {
+  ListHouse,
+  ApproveHouse,
+  CommentHouse,
+  Sequelize,
+} = require("../models");
+const Op = Sequelize.Op;
 
 exports.getAllHouse = async (req, res) => {
   try {
@@ -15,7 +21,7 @@ exports.getAllHouse = async (req, res) => {
 exports.getSearchHouse = async (req, res) => {
   try {
     let results = await ListHouse.findAll({
-      where: { address: req.body.searchItem?.toLowerCase() },
+      where: { address: { [Op.like]: `%${req.body.searchItem}%` } },
     });
     return res.json(results);
   } catch (error) {

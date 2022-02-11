@@ -74,4 +74,5 @@ module.exports = {
   CommentRequest,
   CommentHouse,
   sequelize,
+  Sequelize,
 };

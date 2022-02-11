@@ -2,7 +2,10 @@ const {
   Restaurant,
   ApproveRestaurant,
   CommentRestaurant,
+  Sequelize,
 } = require("../models");
+
+const Op = Sequelize.Op;
 
 exports.getAllRestaurants = async (req, res) => {
   try {
@@ -19,7 +22,7 @@ exports.getAllRestaurants = async (req, res) => {
 exports.getSearchRestaurants = async (req, res) => {
   try {
     let results = await Restaurant.findAll({
-      where: { restaurant_name: req.body.searchItem?.toLowerCase() },
+      where: { restaurant_name: { [Op.like]: `%${req.body.searchItem}%` } },
     });
     return res.json(results);
   } catch (error) {

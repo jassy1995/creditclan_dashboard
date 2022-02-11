@@ -2,7 +2,10 @@ const {
   CrawledProperty,
   ApproveCrawledProperty,
   ListHouse,
+  Sequelize,
 } = require("../models");
+
+const Op = Sequelize.Op;
 
 exports.iniTializerFunction = async (req, res) => {
   try {
@@ -35,7 +38,7 @@ exports.getAllProperty = async (req, res) => {
 exports.searchProperty = async (req, res) => {
   try {
     let results = await CrawledProperty.findAll({
-      where: { title: req.body.searchItem?.toLowerCase() },
+      where: { title: { [Op.like]: `%${req.body.searchItem}%` } },
     });
     return res.json(results);
   } catch (error) {
