@@ -7,6 +7,8 @@ const restaurantRoutes = require("./routes/restaurant.route");
 const houseRoutes = require("./routes/house.route");
 const rentRequestRoute = require("./routes/rent-request.route");
 const crawledPropertyRoute = require("./routes/crawled-property.route");
+const schoolRoute = require("./routes/school.route");
+const teacherRoute = require("./routes/teacher.route");
 
 // require("dotenv").config();
 sequelize.sync().then(() => {
@@ -21,6 +23,8 @@ app.use(restaurantRoutes);
 app.use(houseRoutes);
 app.use(rentRequestRoute);
 app.use(crawledPropertyRoute);
+app.use(schoolRoute);
+app.use(teacherRoute);
 
 const PORT = process.env.PORT || 2022;
 app.listen(PORT, () => {

@@ -57,6 +57,18 @@ const ApproveCrawledProperty = require("./approve-crawled-property.model")(
   Sequelize
 );
 
+const CommentSchoolLoan = require("./comment-school-loan.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
+const CommentTeacherLoan = require("./comment-teacher-loan.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
 module.exports = {
   ApproveCrawledProperty,
   CrawledProperty,
@@ -67,6 +79,8 @@ module.exports = {
   CommentRestaurant,
   CommentRequest,
   CommentHouse,
+  CommentSchoolLoan,
+  CommentTeacherLoan,
   sequelize,
   Sequelize,
 };
