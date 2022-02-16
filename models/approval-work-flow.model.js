@@ -18,6 +18,10 @@ const ApprovalWorkFlow = (sequelize, DataTypes, Sequelize) =>
     date: {
       type: DataTypes.DATEONLY,
     },
+    pre_step: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
   });
 
 module.exports = ApprovalWorkFlow;
