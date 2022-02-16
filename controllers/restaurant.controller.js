@@ -182,7 +182,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         { where: { request_id } }
       );
       let request = await ApprovalWorkFlow.findOne({
-        where: { request },
+        where: { request_id },
       });
       return res.json({ result: 2, request });
     } else if (ch?.pre_step == 2) {
@@ -191,7 +191,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         { where: { request_id } }
       );
       let request = await ApprovalWorkFlow.findOne({
-        where: { request },
+        where: { request_id },
       });
       return res.json({ result: 3, request });
     } else if (ch?.pre_step == 3) {
@@ -200,7 +200,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         { where: { request_id } }
       );
       let request = await ApprovalWorkFlow.findOne({
-        where: { request },
+        where: { request_id },
       });
       return res.json({ result: 4, request });
     } else if (ch?.pre_step == 4) {
@@ -209,7 +209,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         { where: { request_id } }
       );
       let request = await ApprovalWorkFlow.findOne({
-        where: { request },
+        where: { request_id },
       });
       return res.json({ result: 5, request });
     } else {
