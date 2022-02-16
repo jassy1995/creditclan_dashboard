@@ -10,5 +10,6 @@ router.post(
 router.post("/api/approve", Controller.approveRestaurants);
 router.post("/api/comment", Controller.commentRestaurantMethod);
 router.post("/api/update-restaurant-record", Controller.updateRestaurantRecord);
+router.post("/api/get-restaurant-comment", Controller.getAllRestaurantComment);
 
 module.exports = router;

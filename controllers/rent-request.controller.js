@@ -16,3 +16,15 @@ exports.rentRequestComment = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+
+exports.getAllRentComment = async (req, res) => {
+  try {
+    let results = await CommentRequest.findAll({
+      offset: req.body.start,
+      limit: 10,
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};

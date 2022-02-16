@@ -111,3 +111,15 @@ exports.updateRestaurantRecord = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+
+exports.getAllRestaurantComment = async (req, res) => {
+  try {
+    let results = await CommentRestaurant.findAll({
+      offset: req.body.start,
+      limit: 10,
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
