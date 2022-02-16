@@ -161,7 +161,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
     //     date: null,
     //     pre_step: 0,
     //   });
-    const ch = await ApprovalWorkFlow.findOne({ where: { request_id } });
+    const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
     console.log(ch?.pre_step);
     if (action == "call the applicant" && ch == null) {
       await ApprovalWorkFlow.create({
@@ -175,7 +175,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "visit the restaurant" && Number(ch.pre_step) == 0) {
+    } else if (
+      action == "visit the restaurant" &&
+      ch[ch.length - 1].pre_step == 0
+    ) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
@@ -187,7 +190,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (ch.pre_step == 1) {
+    } else if (
+      action == "meet with restaurant owner" &&
+      ch[ch.length - 1].pre_step == 1
+    ) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
@@ -199,7 +205,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "sign agreement" && Number(ch.pre_step) == 2) {
+    } else if (action == "sign agreement" && ch[ch.length - 1].pre_step == 2) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
@@ -211,7 +217,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "approve disbursement" && Number(ch.pre_step) == 3) {
+    } else if (
+      action == "approve disbursement" &&
+      ch[ch.length - 1].pre_step == 3
+    ) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
