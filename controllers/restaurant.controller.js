@@ -162,60 +162,63 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 0,
       });
     const ch = await ApprovalWorkFlow.findOne({ where: { request_id } });
-    if (action == "call the applicant" && ch.pre_step == 0) {
+    if (action == "call the applicant" && Number(ch.pre_step) == 0) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: ch.pre_step + 1,
+        pre_step: Number(ch.pre_step) + 1,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "visit the restaurant" && ch.pre_step == 1) {
+    } else if (action == "visit the restaurant" && Number(ch.pre_step) == 1) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: ch.pre_step + 1,
+        pre_step: Number(ch.pre_step) + 1,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "meet with restaurant owner" && pre_step == 2) {
+    } else if (
+      action == "meet with restaurant owner" &&
+      Number(ch.pre_step) == 2
+    ) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: ch.pre_step + 1,
-        date: Date.now(),
-      });
-      let request = await ApprovalWorkFlow.findOne({
-        where: { request_id },
-      });
-      return res.json(request);
-    } else if (action == "sign agreement" && pre_step == 3) {
-      await ApprovalWorkFlow.create({
-        user_id: user_id,
-        action: action,
-        request_id,
-        pre_step: ch.pre_step + 1,
+        pre_step: Number(ch.pre_step) + 1,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "approve disbursement" && pre_step == 4) {
+    } else if (action == "sign agreement" && Number(ch.pre_step) == 3) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: ch.pre_step + 1,
+        pre_step: Number(ch.pre_step) + 1,
+        date: Date.now(),
+      });
+      // let request = await ApprovalWorkFlow.findOne({
+      //   where: { request_id },
+      // });
+      return res.json("updated");
+    } else if (action == "approve disbursement" && Number(ch.pre_step) == 4) {
+      await ApprovalWorkFlow.create({
+        user_id: user_id,
+        action: action,
+        request_id,
+        pre_step: Number(ch.pre_step) + 1,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
