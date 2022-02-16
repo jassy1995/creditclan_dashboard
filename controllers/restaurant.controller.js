@@ -266,10 +266,10 @@ exports.getAllFlowRestaurantFlow = async (req, res) => {
 
 exports.getInitialValue = async (req, res) => {
   try {
-    let results = await ApprovalWorkFlow.findOne({
+    let results = await ApprovalWorkFlow.findAll({
       where: { request_id: req.body.request_id },
     });
-    return res.json(results);
+    return res.json(results[results.length - 1]);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
