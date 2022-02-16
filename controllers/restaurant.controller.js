@@ -163,7 +163,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
     //   });
     const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
     console.log(ch?.pre_step);
-    if (action == "call the applicant" && ch == null) {
+    if (action == "call the applicant" && ch.length == 0) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
