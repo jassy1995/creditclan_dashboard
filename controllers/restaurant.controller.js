@@ -171,10 +171,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 0,
         date: Date.now(),
       });
-      // let request = await ApprovalWorkFlow.findOne({
-      //   where: { request_id },
-      // });
-      return res.json("updated");
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request_id },
+      });
+      return res.json({ request, message: "updated" });
     } else if (
       action == "visit the restaurant" &&
       ch[ch.length - 1].pre_step == 0
@@ -186,10 +186,13 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 1,
         date: Date.now(),
       });
-      // let request = await ApprovalWorkFlow.findOne({
-      //   where: { request_id },
-      // });
-      return res.json("updated");
+      let request = await ApprovalWorkFlow.findAll({
+        where: { request_id },
+      });
+      return res.json({
+        request: request[request.length - 1],
+        message: "updated",
+      });
     } else if (
       action == "meet with restaurant owner" &&
       ch[ch.length - 1].pre_step == 1
@@ -201,10 +204,13 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 2,
         date: Date.now(),
       });
-      // let request = await ApprovalWorkFlow.findOne({
-      //   where: { request_id },
-      // });
-      return res.json("updated");
+      let request = await ApprovalWorkFlow.findAll({
+        where: { request_id },
+      });
+      return res.json({
+        request: request[request.length - 1],
+        message: "updated",
+      });
     } else if (action == "sign agreement" && ch[ch.length - 1].pre_step == 2) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
@@ -213,10 +219,13 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 3,
         date: Date.now(),
       });
-      // let request = await ApprovalWorkFlow.findOne({
-      //   where: { request_id },
-      // });
-      return res.json("updated");
+      let request = await ApprovalWorkFlow.findAll({
+        where: { request_id },
+      });
+      return res.json({
+        request: request[request.length - 1],
+        message: "updated",
+      });
     } else if (
       action == "approve disbursement" &&
       ch[ch.length - 1].pre_step == 3
@@ -228,12 +237,15 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 4,
         date: Date.now(),
       });
-      // let request = await ApprovalWorkFlow.findOne({
-      //   where: { request_id },
-      // });
-      return res.json("updated");
+      let request = await ApprovalWorkFlow.findAll({
+        where: { request_id },
+      });
+      return res.json({
+        request: request[request.length - 1],
+        message: "updated",
+      });
     } else {
-      return res.json({ result: "nothing to update" });
+      return res.json({ message: "nothing to update" });
     }
   } catch (error) {
     console.log(error);
