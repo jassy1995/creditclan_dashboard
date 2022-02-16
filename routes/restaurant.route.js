@@ -12,5 +12,6 @@ router.post("/api/comment", Controller.commentRestaurantMethod);
 router.post("/api/update-restaurant-record", Controller.updateRestaurantRecord);
 router.post("/api/get-restaurant-comment", Controller.getAllRestaurantComment);
 router.get("/api/get-restaurant-workflow", Controller.getWorkFlow);
+router.post("/api/save-action-workflow", Controller.saveWorkFlow);
 
 module.exports = router;

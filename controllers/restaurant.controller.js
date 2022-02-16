@@ -17,6 +17,15 @@ exports.getWorkFlow = async (req, res) => {
   }
 };
 
+exports.saveWorkFlow = async (req, res) => {
+  try {
+    let results = await ApprovalWorkFlow.create({ action: req.body.action });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.getAllRestaurants = async (req, res) => {
   try {
     let results = await Restaurant.findAll({
