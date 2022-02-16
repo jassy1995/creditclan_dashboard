@@ -107,10 +107,13 @@ exports.updateHouseRecord = async (req, res) => {
 
 exports.getAllHouseComment = async (req, res) => {
   try {
-    let results = await CommentHouse.findAll({
-      offset: req.body.start,
-      limit: 10,
-    });
+    let results = await CommentHouse.findAll(
+      {
+        offset: req.body.start,
+        limit: 10,
+      },
+      { where: { house_id: req.body.request_id } }
+    );
     return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });

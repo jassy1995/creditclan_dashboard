@@ -19,10 +19,13 @@ exports.rentRequestComment = async (req, res) => {
 
 exports.getAllRentComment = async (req, res) => {
   try {
-    let results = await CommentRequest.findAll({
-      offset: req.body.start,
-      limit: 10,
-    });
+    let results = await CommentRequest.findAll(
+      {
+        offset: req.body.start,
+        limit: 10,
+      },
+      { where: { request_id: req.body.request_id } }
+    );
     return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
