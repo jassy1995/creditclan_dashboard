@@ -226,7 +226,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       // });
       return res.json("updated");
     } else {
-      return res.json({ result: "nothing to update" });
+      return res.json({ result: "nothing to update", ch });
     }
   } catch (error) {
     console.log(error);
