@@ -157,7 +157,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       await ApprovalWorkFlow.create({
         user_id: null,
         action: null,
-        request_id: null,
+        request_id,
         date: null,
         pre_step: 0,
       });
@@ -226,7 +226,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       // });
       return res.json("updated");
     } else {
-      return res.json({ result: "nothing to update", ch });
+      return res.json({ result: "nothing to update" });
     }
   } catch (error) {
     console.log(error);
