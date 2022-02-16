@@ -69,6 +69,12 @@ const CommentTeacherLoan = require("./comment-teacher-loan.model")(
   Sequelize
 );
 
+const ApprovalWorkFlow = require("./approval-work-flow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
 module.exports = {
   ApproveCrawledProperty,
   CrawledProperty,
@@ -81,6 +87,7 @@ module.exports = {
   CommentHouse,
   CommentSchoolLoan,
   CommentTeacherLoan,
+  ApprovalWorkFlow,
   sequelize,
   Sequelize,
 };

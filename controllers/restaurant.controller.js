@@ -2,10 +2,20 @@ const {
   Restaurant,
   ApproveRestaurant,
   CommentRestaurant,
+  ApprovalWorkFlow,
   Sequelize,
 } = require("../models");
 
 const Op = Sequelize.Op;
+
+exports.getWorkFlow = async (req, res) => {
+  try {
+    let results = await ApprovalWorkFlow.findAll();
+    return res.json(results[0]);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
 
 exports.getAllRestaurants = async (req, res) => {
   try {
