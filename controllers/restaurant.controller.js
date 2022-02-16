@@ -151,45 +151,69 @@ exports.preApprovalWorkFlow = async (req, res) => {
   const { user_id, request_id } = req.body;
   try {
     let checkUser = await ApprovalWorkFlow.findOne({
-      where: { restaurant_id },
+      where: { request_id },
     });
     if (checkUser === null)
       await ApprovalWorkFlow.create({
-        bm_id: null,
-        manager_id: null,
-        restaurant_id,
+        user_id: null,
+        action: null,
+        request_id,
         date: null,
-        is_approved: "-1",
+        pre_step: 0,
       });
-    const ch = await ApprovalWorkFlow.findOne({ where: { restaurant_id } });
-    if (ch.is_approved === "-1") {
+    const ch = await ApprovalWorkFlow.findOne({ where: { request_id } });
+    if (ch.pre_step == 0) {
       await ApprovalWorkFlow.update(
-        { bm_id: user_id, is_approved: "0", date: Date.now() },
-        { where: { restaurant_id } }
+        {
+          user_id: user_id,
+          action: "call the applicant",
+          pre_step: 1,
+          date: Date.now(),
+        },
+        { where: { request_id } }
       );
-      await Restaurant.update(
-        { is_approved: "0" },
-        { where: { id: restaurant_id } }
-      );
-      let restaurant = await Restaurant.findOne({
-        where: { id: restaurant_id },
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request_id },
       });
-      return res.json({ result: "0", restaurant });
-    } else if (ch.is_approved === "0") {
-      await ApproveRestaurant.update(
-        { is_approved: "1", manager_id: user_id },
-        { where: { restaurant_id } }
+      return res.json({ result: 1, request });
+    } else if (ch.is_approved == 1) {
+      await ApprovalWorkFlow.update(
+        { pre_step: 2, action: "visit the restaurant" },
+        { where: { request_id } }
       );
-      await Restaurant.update(
-        { is_approved: "1" },
-        { where: { id: restaurant_id } }
-      );
-      let restaurant = await Restaurant.findOne({
-        where: { id: restaurant_id },
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request },
       });
-      return res.json({ result: "1", restaurant });
-    } else if (ch?.is_approved == "1") {
-      return res.json({ result: "done", restaurant_id });
+      return res.json({ result: 2, request });
+    } else if (ch?.is_approved == 2) {
+      await ApprovalWorkFlow.update(
+        { pre_step: 3, action: "meet with restaurant owner" },
+        { where: { request_id } }
+      );
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request },
+      });
+      return res.json({ result: 3, request });
+    } else if (ch?.is_approved == 3) {
+      await ApprovalWorkFlow.update(
+        { pre_step: 4, action: "sign agreement" },
+        { where: { request_id } }
+      );
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request },
+      });
+      return res.json({ result: 4, request });
+    } else if (ch?.is_approved == 4) {
+      await ApprovalWorkFlow.update(
+        { pre_step: 5, action: "approve disbursement" },
+        { where: { request_id } }
+      );
+      let request = await ApprovalWorkFlow.findOne({
+        where: { request },
+      });
+      return res.json({ result: 5, request });
+    } else {
+      return res.json({ result: "nothing to update" });
     }
   } catch (error) {
     console.log(error);
