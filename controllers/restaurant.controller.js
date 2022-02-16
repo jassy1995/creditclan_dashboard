@@ -176,7 +176,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request_id },
       });
       return res.json({ result: 1, request });
-    } else if (ch.is_approved == 1) {
+    } else if (ch.pre_step == 1) {
       await ApprovalWorkFlow.update(
         { pre_step: 2, action: "visit the restaurant" },
         { where: { request_id } }
@@ -185,7 +185,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request },
       });
       return res.json({ result: 2, request });
-    } else if (ch?.is_approved == 2) {
+    } else if (ch?.pre_step == 2) {
       await ApprovalWorkFlow.update(
         { pre_step: 3, action: "meet with restaurant owner" },
         { where: { request_id } }
@@ -194,7 +194,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request },
       });
       return res.json({ result: 3, request });
-    } else if (ch?.is_approved == 3) {
+    } else if (ch?.pre_step == 3) {
       await ApprovalWorkFlow.update(
         { pre_step: 4, action: "sign agreement" },
         { where: { request_id } }
@@ -203,7 +203,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request },
       });
       return res.json({ result: 4, request });
-    } else if (ch?.is_approved == 4) {
+    } else if (ch?.pre_step == 4) {
       await ApprovalWorkFlow.update(
         { pre_step: 5, action: "approve disbursement" },
         { where: { request_id } }
