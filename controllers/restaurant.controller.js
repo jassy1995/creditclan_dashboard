@@ -169,10 +169,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
         request_id,
         date: Date.now(),
       });
-      let request = await ApprovalWorkFlow.findOne({
-        where: { request_id },
-      });
-      return res.json(request);
+      // let request = await ApprovalWorkFlow.findOne({
+      //   where: { request_id },
+      // });
+      return res.json("updated");
     } else if (action == "visit the restaurant") {
       await ApprovalWorkFlow.create({
         user_id: user_id,
@@ -180,10 +180,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
         request_id,
         date: Date.now(),
       });
-      let request = await ApprovalWorkFlow.findOne({
-        where: { request_id },
-      });
-      return res.json(request);
+      // let request = await ApprovalWorkFlow.findOne({
+      //   where: { request_id },
+      // });
+      return res.json("updated");
     } else if (action == "meet with restaurant owner") {
       await ApprovalWorkFlow.create({
         user_id: user_id,
@@ -202,10 +202,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
         request_id,
         date: Date.now(),
       });
-      let request = await ApprovalWorkFlow.findOne({
-        where: { request_id },
-      });
-      return res.json(request);
+      // let request = await ApprovalWorkFlow.findOne({
+      //   where: { request_id },
+      // });
+      return res.json("updated");
     } else if (action == "approve disbursement") {
       await ApprovalWorkFlow.create({
         user_id: user_id,
@@ -213,10 +213,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
         request_id,
         date: Date.now(),
       });
-      let request = await ApprovalWorkFlow.findOne({
-        where: { request_id },
-      });
-      return res.json(request);
+      // let request = await ApprovalWorkFlow.findOne({
+      //   where: { request_id },
+      // });
+      return res.json("updated");
     } else {
       return res.json({ result: "nothing to update" });
     }
