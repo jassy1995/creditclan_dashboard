@@ -20,7 +20,6 @@ const ApprovalWorkFlow = (sequelize, DataTypes, Sequelize) =>
     },
     pre_step: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
     },
   });
 
