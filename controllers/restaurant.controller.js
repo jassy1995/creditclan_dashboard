@@ -3,6 +3,7 @@ const {
   ApproveRestaurant,
   CommentRestaurant,
   ApprovalWorkFlow,
+  ApproveFlow,
   Sequelize,
 } = require("../models");
 
@@ -140,6 +141,67 @@ exports.getAllRestaurantComment = async (req, res) => {
       },
       { where: { restaurant_id: req.body.request_id } }
     );
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.preApprovalWorkFlow = async (req, res) => {
+  const { user_id, request_id } = req.body;
+  try {
+    let checkUser = await ApprovalWorkFlow.findOne({
+      where: { restaurant_id },
+    });
+    if (checkUser === null)
+      await ApprovalWorkFlow.create({
+        bm_id: null,
+        manager_id: null,
+        restaurant_id,
+        date: null,
+        is_approved: "-1",
+      });
+    const ch = await ApprovalWorkFlow.findOne({ where: { restaurant_id } });
+    if (ch.is_approved === "-1") {
+      await ApprovalWorkFlow.update(
+        { bm_id: user_id, is_approved: "0", date: Date.now() },
+        { where: { restaurant_id } }
+      );
+      await Restaurant.update(
+        { is_approved: "0" },
+        { where: { id: restaurant_id } }
+      );
+      let restaurant = await Restaurant.findOne({
+        where: { id: restaurant_id },
+      });
+      return res.json({ result: "0", restaurant });
+    } else if (ch.is_approved === "0") {
+      await ApproveRestaurant.update(
+        { is_approved: "1", manager_id: user_id },
+        { where: { restaurant_id } }
+      );
+      await Restaurant.update(
+        { is_approved: "1" },
+        { where: { id: restaurant_id } }
+      );
+      let restaurant = await Restaurant.findOne({
+        where: { id: restaurant_id },
+      });
+      return res.json({ result: "1", restaurant });
+    } else if (ch?.is_approved == "1") {
+      return res.json({ result: "done", restaurant_id });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getAllFlowRestaurantFlow = async (req, res) => {
+  try {
+    let results = await ApproveFlow.findAll({
+      where: { category: req.body.category },
+    });
     return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
