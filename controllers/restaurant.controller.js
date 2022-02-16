@@ -179,7 +179,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: Number(ch.pre_step) + 1,
+        pre_step: 1,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
@@ -194,7 +194,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: Number(ch.pre_step) + 1,
+        pre_step: 2,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
@@ -206,7 +206,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: Number(ch.pre_step) + 1,
+        pre_step: 3,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
@@ -218,7 +218,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: Number(ch.pre_step) + 1,
+        pre_step: 4,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
