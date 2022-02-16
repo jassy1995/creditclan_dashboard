@@ -186,7 +186,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (Number(ch.pre_step) == 1) {
+    } else if (ch.pre_step == 1) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
