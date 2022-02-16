@@ -11,7 +11,7 @@ const Op = Sequelize.Op;
 exports.getWorkFlow = async (req, res) => {
   try {
     let results = await ApprovalWorkFlow.findAll();
-    return res.json(results[0]);
+    return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
