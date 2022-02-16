@@ -150,31 +150,31 @@ exports.getAllRestaurantComment = async (req, res) => {
 exports.preApprovalWorkFlow = async (req, res) => {
   const { user_id, request_id, action } = req.body;
   try {
-    let checkUser = await ApprovalWorkFlow.findOne({
-      where: { request_id },
-    });
-    if (checkUser === null)
-      await ApprovalWorkFlow.create({
-        user_id: null,
-        action: null,
-        request_id,
-        date: null,
-        pre_step: 0,
-      });
+    // let checkUser = await ApprovalWorkFlow.findOne({
+    //   where: { request_id },
+    // });
+    // if (checkUser === null)
+    //   await ApprovalWorkFlow.create({
+    //     user_id: null,
+    //     action: null,
+    //     request_id,
+    //     date: null,
+    //     pre_step: 0,
+    //   });
     const ch = await ApprovalWorkFlow.findOne({ where: { request_id } });
-    if (action == "call the applicant" && Number(ch.pre_step) == 0) {
+    if (action == "call the applicant" && ch.pre_step == null) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: Number(ch.pre_step) + 1,
+        pre_step: 0,
         date: Date.now(),
       });
       // let request = await ApprovalWorkFlow.findOne({
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "visit the restaurant" && Number(ch.pre_step) == 1) {
+    } else if (action == "visit the restaurant" && Number(ch.pre_step) == 0) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
@@ -188,7 +188,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       return res.json("updated");
     } else if (
       action == "meet with restaurant owner" &&
-      Number(ch.pre_step) == 2
+      Number(ch.pre_step) == 1
     ) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
@@ -201,7 +201,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "sign agreement" && Number(ch.pre_step) == 3) {
+    } else if (action == "sign agreement" && Number(ch.pre_step) == 2) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
@@ -213,7 +213,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       //   where: { request_id },
       // });
       return res.json("updated");
-    } else if (action == "approve disbursement" && Number(ch.pre_step) == 4) {
+    } else if (action == "approve disbursement" && Number(ch.pre_step) == 3) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
