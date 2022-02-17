@@ -326,8 +326,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     let val = await ApprovalWorkFlow.findAll({
       group: ["pre_step"],
       attributes: [
-        "pre_step",
-        "action",
+        ["pre_step", "action"],
         [Sequelize.fn("COUNT", "pre_step"), "count"],
       ],
       order: [[Sequelize.literal("count"), "DESC"]],
