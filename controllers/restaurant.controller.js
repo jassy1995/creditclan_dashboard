@@ -6,6 +6,7 @@ const {
   ApproveFlow,
   Sequelize,
 } = require("../models");
+const axios = require("axios");
 
 const Op = Sequelize.Op;
 
@@ -270,6 +271,51 @@ exports.getInitialValue = async (req, res) => {
       where: { request_id: req.body.request_id },
     });
     return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getSummaryOfRequestStage = async (req, res) => {
+  try {
+    // let all_restaurant = await Restaurant.findAll({
+    //   where: { id: request.id },
+    // });
+    // let call_applicant = await ApprovalWorkFlow.findAll({
+    //   where: { action: "call the applicant" },
+    // });
+    // let visit_restaurant = await ApprovalWorkFlow.findAll({
+    //   where: { action: "visit the restaurant" },
+    // });
+    // let meet_restaurant_owner = await ApprovalWorkFlow.findAll({
+    //   where: { action: "meet with restaurant owner" },
+    // });
+    // let sign_agreement = await ApprovalWorkFlow.findAll({
+    //   where: { action: "sign agreement" },
+    // });
+    // let sign_agreement = await ApprovalWorkFlow.findAll({
+    //   where: { action: "approve disbursement" },
+    // });
+    let val = await ApprovalWorkFlow.findAll({
+      attributes: [
+        "ApprovalWorkFlow.action",
+        [
+          sequelize.fn("COUNT", sequelize.col("ApprovalWorkFlow.id")),
+          "CountPerRequest",
+        ],
+      ],
+      include: [
+        {
+          model: ApprovalWorkFlow,
+          attributes: [],
+          include: [],
+        },
+      ],
+      group: ["ApprovalWorkFlow.pre_step"],
+      raw: true,
+    });
+
+    return res.json(val);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
