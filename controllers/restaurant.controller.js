@@ -335,10 +335,14 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // });
 
     let array = [];
-    let allResults = await axios.post(
-      "https://whatsapp.creditclan.com/rent/api/restaurant-detail",
-      { start: 0 }
-    );
+    let allResults = await axios
+      .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
+        start: 0,
+      })
+      .then(function (response) {
+        return response;
+      });
+    console.log(allResults);
 
     for (let index = 0; index < allResults.length; index++) {
       let arr = await ApprovalWorkFlow.findAll({
@@ -351,7 +355,6 @@ exports.getSummaryOfRequestStage = async (req, res) => {
         array.push({ step: 0, action: "call the applicant" });
       }
     }
-    console.log(array);
 
     // let groups = array.reduce((groups, param) => {
     //   const data = param.action;
