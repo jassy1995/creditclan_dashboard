@@ -269,7 +269,7 @@ exports.getInitialValue = async (req, res) => {
     let results = await ApprovalWorkFlow.findAll({
       where: { request_id: req.body.request_id },
     });
-    return res.json(results[results.length - 1]);
+    return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
