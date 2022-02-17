@@ -387,7 +387,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       });
       if (!verify) {
         groupArrays.push({
-          pre_step: 0,
+          count: 0,
           action: flows[i].action,
         });
       }
