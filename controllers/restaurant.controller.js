@@ -335,10 +335,13 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // });
 
     let array = [];
-    let allResults = await axios.get(
-      "https://whatsapp.creditclan.com/rent/api/restaurant-detail",
-      { start: 0 }
-    );
+    let allResults = axios
+      .get("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
+        start: 0,
+      })
+      .then((response) => {
+        return response;
+      });
 
     for (let index = 0; index < allResults.length; index++) {
       let arr = await ApprovalWorkFlow.findAll({
