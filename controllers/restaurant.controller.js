@@ -335,12 +335,16 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // });
 
     let array = [];
-    let allResults = await axios
+    let allResults;
+    axios
       .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
         start: 0,
       })
       .then(function (response) {
-        return response;
+        allResults = response;
+      })
+      .catch(function (err) {
+        console.log(err);
       });
     console.log(allResults);
 
