@@ -335,7 +335,10 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // });
 
     let array = [];
-    let allResults = await Restaurant.findAll();
+    let allResults = await axios.get(
+      "https://whatsapp.creditclan.com/rent/api/restaurant-detail",
+      { start: 0 }
+    );
 
     for (let index = 0; index < allResults.length; index++) {
       let arr = await ApprovalWorkFlow.findAll({
@@ -371,7 +374,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    return res.json(allResults);
+    return res.json(allResults).length;
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
