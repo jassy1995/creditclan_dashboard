@@ -348,21 +348,22 @@ exports.getSummaryOfRequestStage = async (req, res) => {
         array.push({ step: 0, action: "call the applicant" });
       }
     }
+    console.log(array);
 
-    let groups = array.reduce((groups, param) => {
-      const data = param.action;
-      if (!groups[data]) {
-        groups[data] = [];
-      }
-      groups[data].push(param);
-      return groups;
-    }, {});
-    const groupArrays = Object.keys(groups).map((data) => {
-      return {
-        data,
-        games: groups[data],
-      };
-    });
+    // let groups = array.reduce((groups, param) => {
+    //   const data = param.action;
+    //   if (!groups[data]) {
+    //     groups[data] = [];
+    //   }
+    //   groups[data].push(param);
+    //   return groups;
+    // }, {});
+    // const groupArrays = Object.keys(groups).map((data) => {
+    //   return {
+    //     data,
+    //     games: groups[data],
+    //   };
+    // });
 
     // let val = await ApprovalWorkFlow.findAll({
     //   where: {
@@ -370,7 +371,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    return res.json(groupArrays);
+    return res.json(array);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
