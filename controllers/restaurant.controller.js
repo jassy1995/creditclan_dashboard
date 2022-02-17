@@ -296,24 +296,60 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // let sign_agreement = await ApprovalWorkFlow.findAll({
     //   where: { action: "approve disbursement" },
     // });
+    // let val = await ApprovalWorkFlow.findAll({
+    //   attributes: [
+    //     "ApprovalWorkFlow.action",
+    //     [
+    //       sequelize.fn("COUNT", sequelize.col("ApprovalWorkFlow.id")),
+    //       "CountPerRequest",
+    //     ],
+    //   ],
+    //   include: [
+    //     {
+    //       model: ApprovalWorkFlow,
+    //       attributes: [],
+    //       include: [],
+    //     },
+    //   ],
+    //   group: ["ApprovalWorkFlow.pre_step"],
+    //   raw: true,
+    // });
+
+    // let val = await ApprovalWorkFlow.findAll({
+    //   attributes: {
+    //     include: [
+    //       [sequelize.fn("COUNT", sequelize.col("pre_step")), "totalPrice"],
+    //     ],
+    //   },
+    // });
+
     let val = await ApprovalWorkFlow.findAll({
-      attributes: [
-        "ApprovalWorkFlow.action",
-        [
-          sequelize.fn("COUNT", sequelize.col("ApprovalWorkFlow.id")),
-          "CountPerRequest",
-        ],
-      ],
-      include: [
-        {
-          model: ApprovalWorkFlow,
-          attributes: [],
-          include: [],
-        },
-      ],
-      group: ["ApprovalWorkFlow.pre_step"],
+      group: ["pre_step"],
+      attributes: ["pre_step", [Sequelize.fn("COUNT", "pre_step"), "count"]],
+      order: [[Sequelize.literal("count"), "DESC"]],
       raw: true,
     });
+
+    // let val = await ApprovalWorkFlow.findAll({
+    //   where: {
+    //     category: req.body.category,
+    //   },
+    // });
+
+    // let groups = val.reduce((groups, param) => {
+    //   const data = param.mutuals;
+    //   if (!groups[data]) {
+    //     groups[data] = [];
+    //   }
+    //   groups[data].push(param);
+    //   return groups;
+    // }, {});
+    // const groupArrays = Object.keys(groups).map((data) => {
+    //   return {
+    //     data,
+    //     games: groups[data],
+    //   };
+    // });
 
     return res.json(val);
   } catch (error) {
