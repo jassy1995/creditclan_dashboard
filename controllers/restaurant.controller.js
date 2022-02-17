@@ -366,7 +366,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     let val = await Restaurant.findAll({
       group: ["is_approved"],
       attributes: [
-        "is_approved",
+        ["is_approved", "stage"],
         [Sequelize.fn("COUNT", "is_approved"), "count"],
       ],
       order: [[Sequelize.literal("count"), "DESC"]],
