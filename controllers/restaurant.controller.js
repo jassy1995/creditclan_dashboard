@@ -336,12 +336,13 @@ exports.getSummaryOfRequestStage = async (req, res) => {
 
     let array = [];
     let allResults;
-    axios
+
+    await axios
       .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
         start: 0,
       })
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         allResults = response.data;
       })
       .catch((err) => {
@@ -349,17 +350,17 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       });
     console.log(allResults);
 
-    for (let index = 0; index < allResults.length; index++) {
-      let arr = await ApprovalWorkFlow.findAll({
-        where: { request_id: allResults[index].id },
-      });
+    // for (let index = 0; index < allResults.length; index++) {
+    //   let arr = await ApprovalWorkFlow.findAll({
+    //     where: { request_id: allResults[index].id },
+    //   });
 
-      if (arr.length > 0) {
-        array.push(arr[arr.length - 1]);
-      } else {
-        array.push({ step: 0, action: "call the applicant" });
-      }
-    }
+    //   if (arr.length > 0) {
+    //     array.push(arr[arr.length - 1]);
+    //   } else {
+    //     array.push({ step: 0, action: "call the applicant" });
+    //   }
+    // }
 
     // let groups = array.reduce((groups, param) => {
     //   const data = param.action;
@@ -382,7 +383,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    return res.json(allResults).length;
+    return res.json(allResults.length);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
