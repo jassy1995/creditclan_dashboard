@@ -377,6 +377,22 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       };
     });
 
+    let flows = await ApproveFlow.findAll({
+      where: { category: "restaurant" },
+    });
+
+    for (let i = 0; i < flows.length; i++) {
+      let verify = groupArrays.find((element) => {
+        return element.action == flows[i].action;
+      });
+      if (!verify) {
+        groupArrays.push({
+          pre_step: 0,
+          action: flows[i].action,
+        });
+      }
+    }
+
     // let val = await ApprovalWorkFlow.findAll({
     //   where: {
     //     category: req.body.category,
