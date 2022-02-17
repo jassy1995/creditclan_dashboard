@@ -373,7 +373,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     const groupArrays = Object.keys(groups).map((data) => {
       return {
         action: data,
-        pre_step: groups[data].length,
+        count: groups[data].length,
       };
     });
 
