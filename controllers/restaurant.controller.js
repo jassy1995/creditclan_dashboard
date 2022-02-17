@@ -358,7 +358,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       if (arr.length > 0) {
         array.push(arr[arr.length - 1]);
       } else {
-        array.push({ step: 0, action: "call the applicant" });
+        array.push({ step: 0, action: "About to call the applicant" });
       }
     }
 
