@@ -323,15 +323,45 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    let val = await ApprovalWorkFlow.findAll({
-      group: ["pre_step"],
-      attributes: [
-        "pre_step",
-        "action",
-        [Sequelize.fn("COUNT", "pre_step"), "count"],
-      ],
-      order: [[Sequelize.literal("count"), "DESC"]],
-      raw: true,
+    // let val = await ApprovalWorkFlow.findAll({
+    //   group: ["pre_step"],
+    //   attributes: [
+    //     "pre_step",
+    //     "action",
+    //     [Sequelize.fn("COUNT", "pre_step"), "count"],
+    //   ],
+    //   order: [[Sequelize.literal("count"), "DESC"]],
+    //   raw: true,
+    // });
+
+    let array = [];
+    let allResults = await Restaurant.findAll();
+
+    for (let index = 0; index < allResults.length; index++) {
+      let arr = await ApprovalWorkFlow.findAll({
+        where: { request_id: allResults[index].id },
+      });
+
+      if (arr.length > 0) {
+        array.push(arr[arr.length - 1]);
+      } else {
+        array.push({ step: 0, action: "call the applicant" });
+      }
+    }
+
+    let groups = array.reduce((groups, param) => {
+      const data = param.action;
+      if (!groups[data]) {
+        groups[data] = [];
+      }
+      groups[data].push(param);
+      return groups;
+    }, {});
+    const groupArrays = Object.keys(groups).map((data) => {
+      return {
+        data,
+        games: groups[data],
+      };
     });
 
     // let val = await ApprovalWorkFlow.findAll({
@@ -340,22 +370,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    // let groups = val.reduce((groups, param) => {
-    //   const data = param.mutuals;
-    //   if (!groups[data]) {
-    //     groups[data] = [];
-    //   }
-    //   groups[data].push(param);
-    //   return groups;
-    // }, {});
-    // const groupArrays = Object.keys(groups).map((data) => {
-    //   return {
-    //     data,
-    //     games: groups[data],
-    //   };
-    // });
-
-    return res.json(val);
+    return res.json(groupArrays);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
