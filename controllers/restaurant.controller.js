@@ -340,10 +340,11 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
         start: 0,
       })
-      .then(function (response) {
-        allResults = response;
+      .then((response) => {
+        console.log(response.data);
+        allResults = response.data;
       })
-      .catch(function (err) {
+      .catch((err) => {
         console.log(err);
       });
     console.log(allResults);
