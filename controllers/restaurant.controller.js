@@ -371,7 +371,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    return res.json(allResults.length);
+    return res.json(allResults);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
