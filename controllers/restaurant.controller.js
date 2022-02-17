@@ -325,31 +325,35 @@ exports.getSummaryOfRequestStage = async (req, res) => {
 
     let val = await ApprovalWorkFlow.findAll({
       group: ["pre_step"],
-      attributes: ["pre_step", [Sequelize.fn("COUNT", "pre_step"), "count"]],
+      attributes: [
+        "pre_step",
+        "action",
+        [Sequelize.fn("COUNT", "pre_step"), "count"],
+      ],
       order: [[Sequelize.literal("count"), "DESC"]],
       raw: true,
     });
 
-    // let val = await ApprovalWorkFlow.findAll({
-    //   where: {
-    //     category: req.body.category,
-    //   },
-    // });
+    let val = await ApprovalWorkFlow.findAll({
+      where: {
+        category: req.body.category,
+      },
+    });
 
-    // let groups = val.reduce((groups, param) => {
-    //   const data = param.mutuals;
-    //   if (!groups[data]) {
-    //     groups[data] = [];
-    //   }
-    //   groups[data].push(param);
-    //   return groups;
-    // }, {});
-    // const groupArrays = Object.keys(groups).map((data) => {
-    //   return {
-    //     data,
-    //     games: groups[data],
-    //   };
-    // });
+    let groups = val.reduce((groups, param) => {
+      const data = param.mutuals;
+      if (!groups[data]) {
+        groups[data] = [];
+      }
+      groups[data].push(param);
+      return groups;
+    }, {});
+    const groupArrays = Object.keys(groups).map((data) => {
+      return {
+        data,
+        games: groups[data],
+      };
+    });
 
     return res.json(val);
   } catch (error) {
