@@ -172,10 +172,18 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 0,
         date: Date.now(),
       });
+      await Restaurant.update(
+        { is_approved: "0" },
+        { where: { id: request_id } }
+      );
+      let request2 = await Restaurant.findOne({
+        where: { id: request_id },
+      });
       let request = await ApprovalWorkFlow.findOne({
         where: { request_id },
       });
-      return res.json({ request, message: "updated" });
+
+      return res.json({ request, restaurant: request2, message: "updated" });
     } else if (
       action == "visit the restaurant" &&
       ch[ch.length - 1].pre_step == 0
@@ -190,8 +198,16 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
+      await Restaurant.update(
+        { is_approved: "1" },
+        { where: { id: request_id } }
+      );
+      let request2 = await Restaurant.findOne({
+        where: { id: request_id },
+      });
       return res.json({
         request: request[request.length - 1],
+        restaurant: request2,
         message: "updated",
       });
     } else if (
@@ -208,8 +224,16 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
+      await Restaurant.update(
+        { is_approved: "2" },
+        { where: { id: request_id } }
+      );
+      let request2 = await Restaurant.findOne({
+        where: { id: request_id },
+      });
       return res.json({
         request: request[request.length - 1],
+        restaurant: request2,
         message: "updated",
       });
     } else if (action == "sign agreement" && ch[ch.length - 1].pre_step == 2) {
@@ -223,8 +247,16 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
+      await Restaurant.update(
+        { is_approved: "3" },
+        { where: { id: request_id } }
+      );
+      let request2 = await Restaurant.findOne({
+        where: { id: request_id },
+      });
       return res.json({
         request: request[request.length - 1],
+        restaurant: request2,
         message: "updated",
       });
     } else if (
@@ -241,8 +273,16 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
+      await Restaurant.update(
+        { is_approved: "4" },
+        { where: { id: request_id } }
+      );
+      let request2 = await Restaurant.findOne({
+        where: { id: request_id },
+      });
       return res.json({
         request: request[request.length - 1],
+        restaurant: request2,
         message: "updated",
       });
     } else {
@@ -323,83 +363,82 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     //   },
     // });
 
-    // let val = await ApprovalWorkFlow.findAll({
-    //   group: ["pre_step"],
-    //   attributes: [
-    //     "pre_step",
-    //     "action",
-    //     [Sequelize.fn("COUNT", "pre_step"), "count"],
-    //   ],
-    //   order: [[Sequelize.literal("count"), "DESC"]],
-    //   raw: true,
+    let val = await Restaurant.findAll({
+      group: ["is_approved"],
+      attributes: [
+        "is_approved",
+        [Sequelize.fn("COUNT", "is_approved"), "count"],
+      ],
+      order: [[Sequelize.literal("count"), "DESC"]],
+      raw: true,
+    });
+
+    // let array = [];
+    // let allResults;
+
+    // await axios
+    //   .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
+    //     start: 0,
+    //   })
+    //   .then((response) => {
+    //     // console.log(response.data);
+    //     allResults = response.data;
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+    // console.log(allResults);
+
+    // for (let index = 0; index < allResults.length; index++) {
+    //   let arr = await ApprovalWorkFlow.findAll({
+    //     where: { request_id: allResults[index].id },
+    //   });
+
+    //   if (arr.length > 0) {
+    //     array.push(arr[arr.length - 1]);
+    //   } else {
+    //     array.push({ step: 0, action: "New request" });
+    //   }
+    // }
+
+    // let groups = array.reduce((groups, param) => {
+    //   const data = param.action;
+    //   if (!groups[data]) {
+    //     groups[data] = [];
+    //   }
+    //   groups[data].push(param);
+    //   return groups;
+    // }, {});
+    // const groupArrays = Object.keys(groups).map((data) => {
+    //   return {
+    //     action: data,
+    //     count: groups[data].length,
+    //   };
     // });
 
-    let array = [];
-    let allResults;
+    // let flows = await ApproveFlow.findAll({
+    //   where: { category: "restaurant" },
+    // });
 
-    await axios
-      .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
-        start: 0,
-      })
-      .then((response) => {
-        // console.log(response.data);
-        allResults = response.data;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(allResults);
-
-    for (let index = 0; index < allResults.length; index++) {
-      let arr = await ApprovalWorkFlow.findAll({
-        where: { request_id: allResults[index].id },
-      });
-
-      if (arr.length > 0) {
-        array.push(arr[arr.length - 1]);
-      } else {
-        array.push({ step: 0, action: "New request" });
-      }
-    }
-
-    let groups = array.reduce((groups, param) => {
-      const data = param.action;
-      if (!groups[data]) {
-        groups[data] = [];
-      }
-      groups[data].push(param);
-      return groups;
-    }, {});
-    const groupArrays = Object.keys(groups).map((data) => {
-      return {
-        action: data,
-        count: groups[data].length,
-      };
-    });
-
-    let flows = await ApproveFlow.findAll({
-      where: { category: "restaurant" },
-    });
-
-    for (let i = 0; i < flows.length; i++) {
-      let verify = groupArrays.find((element) => {
-        return element.action == flows[i].action;
-      });
-      if (!verify) {
-        groupArrays.push({
-          count: 0,
-          action: flows[i].action,
-        });
-      }
-    }
+    // for (let i = 0; i < flows.length; i++) {
+    //   let verify = groupArrays.find((element) => {
+    //     return element.action == flows[i].action;
+    //   });
+    //   if (!verify) {
+    //     groupArrays.push({
+    //       count: 0,
+    //       action: flows[i].action,
+    //     });
+    //   }
+    // }
 
     // let val = await ApprovalWorkFlow.findAll({
     //   where: {
     //     category: req.body.category,
     //   },
     // });
-
-    return res.json(groupArrays);
+    // groupArrays;
+    return res.json(val);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
