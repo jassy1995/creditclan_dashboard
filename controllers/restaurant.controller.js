@@ -178,11 +178,11 @@ exports.preApprovalWorkFlow = async (req, res) => {
         let request2 = await Restaurant.findOne({
           where: { id: request_id },
         });
-        let request = await ApprovalWorkFlow.findOne({
-          where: { request_id },
-        });
+        // let request = await ApprovalWorkFlow.findOne({
+        //   where: { request_id },
+        // });
 
-        return res.json({ request, restaurant: request2, message: "updated" });
+        return res.json({ restaurant: request2, message: "updated" });
       } catch (error) {
         return res.json({ error });
       }
@@ -195,9 +195,9 @@ exports.preApprovalWorkFlow = async (req, res) => {
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
-        let request = await ApprovalWorkFlow.findAll({
-          where: { request_id },
-        });
+        // let request = await ApprovalWorkFlow.findAll({
+        //   where: { request_id },
+        // });
         await Restaurant.update(
           { step: ch[ch.length - 1].pre_step + 1 },
           { where: { id: request_id } }
@@ -206,7 +206,6 @@ exports.preApprovalWorkFlow = async (req, res) => {
           where: { id: request_id },
         });
         return res.json({
-          request: request[request.length - 1],
           restaurant: request2,
           message: "updated",
         });
