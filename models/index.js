@@ -81,7 +81,14 @@ const ApproveFlow = require("./approve-flow.model")(
   Sequelize
 );
 
+const ApprovalWorkFlowHouse = require("./house-workflow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
 module.exports = {
+  ApprovalWorkFlowHouse,
   ApproveCrawledProperty,
   CrawledProperty,
   ApproveHouse,

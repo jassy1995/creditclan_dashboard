@@ -2,6 +2,7 @@ const {
   ListHouse,
   ApproveHouse,
   CommentHouse,
+  ApprovalWorkFlowHouse,
   Sequelize,
 } = require("../models");
 const Op = Sequelize.Op;
