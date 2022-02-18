@@ -40,7 +40,7 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
       type: DataTypes.TEXT,
     },
     is_approved: {
-      type: DataTypes.STRING,
+      type: DataTypes.INTEGER,
     },
     step: {
       type: DataTypes.INTEGER,

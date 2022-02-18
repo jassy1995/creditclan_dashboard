@@ -262,7 +262,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request_id },
       });
       await Restaurant.update(
-        { is_approved: "1", step: 5 },
+        { is_approved: 1, step: 5 },
         { where: { id: request_id } }
       );
       let request2 = await Restaurant.findOne({
