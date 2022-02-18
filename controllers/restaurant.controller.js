@@ -361,6 +361,23 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       raw: true,
     });
 
+    let flow = await ApproveFlow.findAll({
+      where: { category: "restaurant" },
+    });
+
+    for (let i = 0; i < flow.length; i++) {
+      let verify = val.find((element) => {
+        return element.stage == i;
+      });
+
+      if (!verify) {
+        val.push({
+          stage: i,
+          count: 0,
+        });
+      }
+    }
+
     // let array = [];
     // let allResults;
 
