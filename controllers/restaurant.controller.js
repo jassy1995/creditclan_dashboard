@@ -149,7 +149,7 @@ exports.getAllRestaurantComment = async (req, res) => {
 };
 
 exports.preApprovalWorkFlow = async (req, res) => {
-  const { user_id, request_id, action } = req.body;
+  const { user_id, request_id, action, category } = req.body;
   try {
     // let checkUser = await ApprovalWorkFlow.findOne({
     //   where: { request_id },
@@ -162,14 +162,15 @@ exports.preApprovalWorkFlow = async (req, res) => {
     //     date: null,
     //     pre_step: 0,
     //   });
+    const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
-    console.log(ch?.pre_step);
-    if (action == "call the applicant" && ch.length == 0) {
+
+    if (ch.length == 0) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: 0,
+        pre_step: 1,
         date: Date.now(),
       });
       await Restaurant.update({ step: 1 }, { where: { id: request_id } });
@@ -181,88 +182,19 @@ exports.preApprovalWorkFlow = async (req, res) => {
       });
 
       return res.json({ request, restaurant: request2, message: "updated" });
-    } else if (
-      action == "visit the restaurant" &&
-      ch[ch.length - 1].pre_step == 0
-    ) {
+    } else if (ch[ch.length - 1].pre_step < checker.length) {
       await ApprovalWorkFlow.create({
         user_id: user_id,
         action: action,
         request_id,
-        pre_step: 1,
-        date: Date.now(),
-      });
-      let request = await ApprovalWorkFlow.findAll({
-        where: { request_id },
-      });
-      await Restaurant.update({ step: 2 }, { where: { id: request_id } });
-      let request2 = await Restaurant.findOne({
-        where: { id: request_id },
-      });
-      return res.json({
-        request: request[request.length - 1],
-        restaurant: request2,
-        message: "updated",
-      });
-    } else if (
-      action == "meet with restaurant owner" &&
-      ch[ch.length - 1].pre_step == 1
-    ) {
-      await ApprovalWorkFlow.create({
-        user_id: user_id,
-        action: action,
-        request_id,
-        pre_step: 2,
-        date: Date.now(),
-      });
-      let request = await ApprovalWorkFlow.findAll({
-        where: { request_id },
-      });
-      await Restaurant.update({ step: 3 }, { where: { id: request_id } });
-      let request2 = await Restaurant.findOne({
-        where: { id: request_id },
-      });
-      return res.json({
-        request: request[request.length - 1],
-        restaurant: request2,
-        message: "updated",
-      });
-    } else if (action == "sign agreement" && ch[ch.length - 1].pre_step == 2) {
-      await ApprovalWorkFlow.create({
-        user_id: user_id,
-        action: action,
-        request_id,
-        pre_step: 3,
-        date: Date.now(),
-      });
-      let request = await ApprovalWorkFlow.findAll({
-        where: { request_id },
-      });
-      await Restaurant.update({ step: 4 }, { where: { id: request_id } });
-      let request2 = await Restaurant.findOne({
-        where: { id: request_id },
-      });
-      return res.json({
-        request: request[request.length - 1],
-        restaurant: request2,
-        message: "updated",
-      });
-    } else if (
-      action == "approve disbursement" &&
-      ch[ch.length - 1].pre_step == 3
-    ) {
-      await ApprovalWorkFlow.create({
-        user_id: user_id,
-        action: action,
-        request_id,
-        pre_step: 4,
+        pre_step: ch[ch.length - 1].pre_step + 1,
         date: Date.now(),
       });
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
       await Restaurant.update(
-        { is_approved: 1, step: 5 },
+        { step: ch[ch.length - 1].pre_step + 1 },
         { where: { id: request_id } }
       );
       let request2 = await Restaurant.findOne({
@@ -273,7 +205,88 @@ exports.preApprovalWorkFlow = async (req, res) => {
         restaurant: request2,
         message: "updated",
       });
-    } else {
+    }
+
+    // else if (
+    //   ch[ch.length - 1].pre_step < checker.length &&
+    //   ch[ch.length - 1].pre_step == 2
+    // ) {
+    //   await ApprovalWorkFlow.create({
+    //     user_id: user_id,
+    //     action: action,
+    //     request_id,
+    //     pre_step: ch[ch.length - 1].pre_step + 1,
+    //     date: Date.now(),
+    //   });
+    //   let request = await ApprovalWorkFlow.findAll({
+    //     where: { request_id },
+    //   });
+    //   await Restaurant.update(
+    //     { step: ch[ch.length - 1].pre_step + 1 },
+    //     { where: { id: request_id } }
+    //   );
+    //   let request2 = await Restaurant.findOne({
+    //     where: { id: request_id },
+    //   });
+    //   return res.json({
+    //     request: request[request.length - 1],
+    //     restaurant: request2,
+    //     message: "updated",
+    //   });
+    // } else if (
+    //   ch[ch.length - 1].pre_step < checker.length &&
+    //   ch[ch.length - 1].pre_step == 3
+    // ) {
+    //   await ApprovalWorkFlow.create({
+    //     user_id: user_id,
+    //     action: action,
+    //     request_id,
+    //     pre_step: ch[ch.length - 1].pre_step + 1,
+    //     date: Date.now(),
+    //   });
+    //   let request = await ApprovalWorkFlow.findAll({
+    //     where: { request_id },
+    //   });
+    //   await Restaurant.update(
+    //     { step: ch[ch.length - 1].pre_step + 1 },
+    //     { where: { id: request_id } }
+    //   );
+    //   let request2 = await Restaurant.findOne({
+    //     where: { id: request_id },
+    //   });
+    //   return res.json({
+    //     request: request[request.length - 1],
+    //     restaurant: request2,
+    //     message: "updated",
+    //   });
+    // } else if (
+    //   ch[ch.length - 1].pre_step < checker.length &&
+    //   ch[ch.length - 1].pre_step == 4
+    // ) {
+    //   await ApprovalWorkFlow.create({
+    //     user_id: user_id,
+    //     action: action,
+    //     request_id,
+    //     pre_step: ch[ch.length - 1].pre_step + 1,
+    //     date: Date.now(),
+    //   });
+    //   let request = await ApprovalWorkFlow.findAll({
+    //     where: { request_id },
+    //   });
+    //   await Restaurant.update(
+    //     { is_approved: 1, step: ch[ch.length - 1].pre_step + 1 },
+    //     { where: { id: request_id } }
+    //   );
+    //   let request2 = await Restaurant.findOne({
+    //     where: { id: request_id },
+    //   });
+    //   return res.json({
+    //     request: request[request.length - 1],
+    //     restaurant: request2,
+    //     message: "updated",
+    //   });
+    // }
+    else {
       return res.json({ message: "nothing to update" });
     }
   } catch (error) {
