@@ -45,12 +45,12 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     step: {
       type: DataTypes.INTEGER,
     },
-    // created_at: {
-    //   type: DataTypes.STRING,
-    // },
-    // updated_at: {
-    //   type: DataTypes.STRING,
-    // },
+    created_at: {
+      type: DataTypes.DATE,
+    },
+    updated_at: {
+      type: DataTypes.DATE,
+    },
   });
 
 module.exports = Restaurant;
