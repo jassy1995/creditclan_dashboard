@@ -172,10 +172,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         pre_step: 0,
         date: Date.now(),
       });
-      await Restaurant.update(
-        { is_approved: "0" },
-        { where: { id: request_id } }
-      );
+      await Restaurant.update({ step: 1 }, { where: { id: request_id } });
       let request2 = await Restaurant.findOne({
         where: { id: request_id },
       });
@@ -198,10 +195,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
-      await Restaurant.update(
-        { is_approved: "1" },
-        { where: { id: request_id } }
-      );
+      await Restaurant.update({ step: 2 }, { where: { id: request_id } });
       let request2 = await Restaurant.findOne({
         where: { id: request_id },
       });
@@ -224,10 +218,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
-      await Restaurant.update(
-        { is_approved: "2" },
-        { where: { id: request_id } }
-      );
+      await Restaurant.update({ step: 3 }, { where: { id: request_id } });
       let request2 = await Restaurant.findOne({
         where: { id: request_id },
       });
@@ -247,10 +238,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       let request = await ApprovalWorkFlow.findAll({
         where: { request_id },
       });
-      await Restaurant.update(
-        { is_approved: "3" },
-        { where: { id: request_id } }
-      );
+      await Restaurant.update({ step: 4 }, { where: { id: request_id } });
       let request2 = await Restaurant.findOne({
         where: { id: request_id },
       });
@@ -274,7 +262,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
         where: { request_id },
       });
       await Restaurant.update(
-        { is_approved: "4" },
+        { is_approved: "1", step: 5 },
         { where: { id: request_id } }
       );
       let request2 = await Restaurant.findOne({
@@ -364,10 +352,10 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     // });
 
     let val = await Restaurant.findAll({
-      group: ["is_approved"],
+      group: ["step"],
       attributes: [
-        ["is_approved", "stage"],
-        [Sequelize.fn("COUNT", "is_approved"), "count"],
+        ["step", "stage"],
+        [Sequelize.fn("COUNT", "step"), "count"],
       ],
       order: [[Sequelize.literal("count"), "DESC"]],
       raw: true,
