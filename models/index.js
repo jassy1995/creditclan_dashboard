@@ -98,8 +98,13 @@ const CrawlingRecord = require("./crawling-record.model")(
   DataTypes,
   Sequelize
 );
-
+const ApprovalWorkFlowSchool = require("./school-workflow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  ApprovalWorkFlowSchool,
   CrawlingRecord,
   ApprovalWorkFlowTeacher,
   ApprovalWorkFlowHouse,
