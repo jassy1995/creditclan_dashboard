@@ -2,6 +2,7 @@ const {
   CommentTeacherLoan,
   ApprovalWorkFlowTeacher,
   ApproveFlow,
+  Teacher,
 } = require("../models");
 exports.teacherLoanComment = async (req, res) => {
   const { comment, user_id, request_id } = req.body;
@@ -50,12 +51,12 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        // await Restaurant.update({ step: 1 }, { where: { id: request_id } });
-        // let request2 = await Restaurant.findOne({
-        //   where: { id: request_id },
-        // });
+        await Restaurant.update({ step: 1 }, { where: { id: request_id } });
+        let request2 = await Teacher.findOne({
+          where: { id: request_id },
+        });
 
-        return res.json({ restaurant: null, message: "updated" });
+        return res.json({ restaurant: request2, message: "updated" });
       } catch (error) {
         return res.json({ error });
       }
@@ -69,15 +70,15 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           date: Date.now(),
         });
 
-        // await Restaurant.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
-        // let request2 = await Restaurant.findOne({
-        //   where: { id: request_id },
-        // });
+        await Teacher.update(
+          { step: ch[ch.length - 1].pre_step + 1 },
+          { where: { id: request_id } }
+        );
+        let request2 = await Teacher.findOne({
+          where: { id: request_id },
+        });
         return res.json({
-          restaurant: null,
+          restaurant: request2,
           message: "updated",
         });
       } catch (error) {
