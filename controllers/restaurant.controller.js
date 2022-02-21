@@ -383,7 +383,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
 };
 // CrawlingRecord;
 
-exports.CrawlingRecordMonitor = (req, res) => {
+exports.CrawlingRecordMonitor = async (req, res) => {
   try {
     const result = await CrawlingRecord.create({
       user_id: req.body.user_id,
