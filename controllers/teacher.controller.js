@@ -1,4 +1,8 @@
-const { CommentTeacherLoan } = require("../models");
+const {
+  CommentTeacherLoan,
+  ApprovalWorkFlowTeacher,
+  ApproveFlow,
+} = require("../models");
 exports.teacherLoanComment = async (req, res) => {
   const { comment, user_id, request_id } = req.body;
   try {
@@ -27,6 +31,63 @@ exports.getTeacherComment = async (req, res) => {
     );
     return res.json(results);
   } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.preApprovalWorkFlowTeacher = async (req, res) => {
+  const { user_id, request_id, action, category } = req.body;
+  try {
+    const checker = await ApproveFlow.findAll({ where: { category } });
+    const ch = await ApprovalWorkFlowTeacher.findAll({ where: { request_id } });
+
+    if (ch.length == 0) {
+      try {
+        await ApprovalWorkFlowTeacher.create({
+          user_id: user_id,
+          action: action,
+          request_id,
+          pre_step: 1,
+          date: Date.now(),
+        });
+        // await Restaurant.update({ step: 1 }, { where: { id: request_id } });
+        // let request2 = await Restaurant.findOne({
+        //   where: { id: request_id },
+        // });
+
+        return res.json({ restaurant: null, message: "updated" });
+      } catch (error) {
+        return res.json({ error });
+      }
+    } else if (ch[ch.length - 1].pre_step < checker.length) {
+      try {
+        await ApprovalWorkFlowTeacher.create({
+          user_id: user_id,
+          action: action,
+          request_id,
+          pre_step: ch[ch.length - 1].pre_step + 1,
+          date: Date.now(),
+        });
+
+        // await Restaurant.update(
+        //   { step: ch[ch.length - 1].pre_step + 1 },
+        //   { where: { id: request_id } }
+        // );
+        // let request2 = await Restaurant.findOne({
+        //   where: { id: request_id },
+        // });
+        return res.json({
+          restaurant: null,
+          message: "updated",
+        });
+      } catch (error) {
+        return res.json({ error });
+      }
+    } else {
+      return res.json({ message: "nothing to update" });
+    }
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
