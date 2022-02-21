@@ -34,7 +34,16 @@ exports.getAllRestaurants = async (req, res) => {
       offset: req.body.start,
       limit: 20,
     });
-    return res.json(results);
+
+    const sorted = results.sort((a, b) =>
+      new Date(a.created_at) > new Date(b.created_at)
+        ? -1
+        : new Date(a.created_at) < new Date(b.created_at)
+        ? 1
+        : 0
+    );
+
+    return res.json(sorted);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
