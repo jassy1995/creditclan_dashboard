@@ -17,10 +17,15 @@ const dbConfig = {
     DB: DB,
   }),
   pool: {
-    max: 5,
+    max: 50,
     min: 0,
     acquire: 30000,
     idle: 10000,
+  },
+  dialectOptions: {
+    // @see https://github.com/sequelize/sequelize/issues/8019
+    decimalNumbers: true,
+    maxPreparedStatements: 100,
   },
 };
 

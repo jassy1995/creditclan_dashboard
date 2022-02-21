@@ -151,17 +151,6 @@ exports.getAllRestaurantComment = async (req, res) => {
 exports.preApprovalWorkFlow = async (req, res) => {
   const { user_id, request_id, action, category } = req.body;
   try {
-    // let checkUser = await ApprovalWorkFlow.findOne({
-    //   where: { request_id },
-    // });
-    // if (checkUser === null)
-    //   await ApprovalWorkFlow.create({
-    //     user_id: null,
-    //     action: null,
-    //     request_id,
-    //     date: null,
-    //     pre_step: 0,
-    //   });
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
 
@@ -178,9 +167,6 @@ exports.preApprovalWorkFlow = async (req, res) => {
         let request2 = await Restaurant.findOne({
           where: { id: request_id },
         });
-        // let request = await ApprovalWorkFlow.findOne({
-        //   where: { request_id },
-        // });
 
         return res.json({ restaurant: request2, message: "updated" });
       } catch (error) {
@@ -195,9 +181,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
-        // let request = await ApprovalWorkFlow.findAll({
-        //   where: { request_id },
-        // });
+
         await Restaurant.update(
           { step: ch[ch.length - 1].pre_step + 1 },
           { where: { id: request_id } }
@@ -212,88 +196,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
       } catch (error) {
         return res.json({ error });
       }
-    }
-
-    // else if (
-    //   ch[ch.length - 1].pre_step < checker.length &&
-    //   ch[ch.length - 1].pre_step == 2
-    // ) {
-    //   await ApprovalWorkFlow.create({
-    //     user_id: user_id,
-    //     action: action,
-    //     request_id,
-    //     pre_step: ch[ch.length - 1].pre_step + 1,
-    //     date: Date.now(),
-    //   });
-    //   let request = await ApprovalWorkFlow.findAll({
-    //     where: { request_id },
-    //   });
-    //   await Restaurant.update(
-    //     { step: ch[ch.length - 1].pre_step + 1 },
-    //     { where: { id: request_id } }
-    //   );
-    //   let request2 = await Restaurant.findOne({
-    //     where: { id: request_id },
-    //   });
-    //   return res.json({
-    //     request: request[request.length - 1],
-    //     restaurant: request2,
-    //     message: "updated",
-    //   });
-    // } else if (
-    //   ch[ch.length - 1].pre_step < checker.length &&
-    //   ch[ch.length - 1].pre_step == 3
-    // ) {
-    //   await ApprovalWorkFlow.create({
-    //     user_id: user_id,
-    //     action: action,
-    //     request_id,
-    //     pre_step: ch[ch.length - 1].pre_step + 1,
-    //     date: Date.now(),
-    //   });
-    //   let request = await ApprovalWorkFlow.findAll({
-    //     where: { request_id },
-    //   });
-    //   await Restaurant.update(
-    //     { step: ch[ch.length - 1].pre_step + 1 },
-    //     { where: { id: request_id } }
-    //   );
-    //   let request2 = await Restaurant.findOne({
-    //     where: { id: request_id },
-    //   });
-    //   return res.json({
-    //     request: request[request.length - 1],
-    //     restaurant: request2,
-    //     message: "updated",
-    //   });
-    // } else if (
-    //   ch[ch.length - 1].pre_step < checker.length &&
-    //   ch[ch.length - 1].pre_step == 4
-    // ) {
-    //   await ApprovalWorkFlow.create({
-    //     user_id: user_id,
-    //     action: action,
-    //     request_id,
-    //     pre_step: ch[ch.length - 1].pre_step + 1,
-    //     date: Date.now(),
-    //   });
-    //   let request = await ApprovalWorkFlow.findAll({
-    //     where: { request_id },
-    //   });
-    //   await Restaurant.update(
-    //     { is_approved: 1, step: ch[ch.length - 1].pre_step + 1 },
-    //     { where: { id: request_id } }
-    //   );
-    //   let request2 = await Restaurant.findOne({
-    //     where: { id: request_id },
-    //   });
-    //   return res.json({
-    //     request: request[request.length - 1],
-    //     restaurant: request2,
-    //     message: "updated",
-    //   });
-    // }
-    else {
+    } else {
       return res.json({ message: "nothing to update" });
     }
   } catch (error) {
