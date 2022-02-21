@@ -53,8 +53,8 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
       updated_at: {
         type: DataTypes.DATE,
       },
-    },
-    { timestamps: false }
+    }
+    // { timestamps: false }
   );
 
 module.exports = Restaurant;
