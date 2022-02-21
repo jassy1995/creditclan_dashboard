@@ -2,6 +2,7 @@ const express = require("express");
 const {
   schoolLoanComment,
   getAllSchoolComment,
+  preApprovalWorkFlowSchool,
 } = require("../controllers/school.controller");
 const router = express.Router();
 
