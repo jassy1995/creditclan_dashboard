@@ -9,18 +9,9 @@ const CrawlingRecord = (sequelize, DataTypes, Sequelize) =>
     user_id: {
       type: DataTypes.TEXT,
     },
-    action: {
-      type: DataTypes.TEXT,
-    },
-    request_id: {
-      type: DataTypes.TEXT,
-    },
     date: {
       type: DataTypes.DATEONLY,
     },
-    pre_step: {
-      type: DataTypes.INTEGER,
-    },
   });
 
-module.exports = ApprovalWorkFlow;
+module.exports = CrawlingRecord;

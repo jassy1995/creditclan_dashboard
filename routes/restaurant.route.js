@@ -17,4 +17,5 @@ router.post("/api/pre_approve", Controller.preApprovalWorkFlow);
 router.post("/api/get-flow", Controller.getAllFlowRestaurantFlow);
 router.post("/api/get-current-request", Controller.getInitialValue);
 router.get("/api/fetch-summary", Controller.getSummaryOfRequestStage);
+router.post("/api/save-scrawling-record", Controller.CrawlingRecordMonitor);
 module.exports = router;

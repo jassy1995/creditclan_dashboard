@@ -4,6 +4,7 @@ const {
   CommentRestaurant,
   ApprovalWorkFlow,
   ApproveFlow,
+  CrawlingRecord,
   Sequelize,
 } = require("../models");
 const axios = require("axios");
@@ -378,5 +379,18 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     return res.json(val);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
+  }
+};
+// CrawlingRecord;
+
+exports.CrawlingRecordMonitor = (req, res) => {
+  try {
+    const result = await CrawlingRecord.create({
+      user_id: req.body.user_id,
+      date: Date.now(),
+    });
+    return res.json(result);
+  } catch (error) {
+    console.log(error);
   }
 };

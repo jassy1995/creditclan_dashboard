@@ -93,7 +93,14 @@ const ApprovalWorkFlowTeacher = require("./teacher-workflow.model")(
   Sequelize
 );
 
+const CrawlingRecord = require("./crawling-record.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
 module.exports = {
+  CrawlingRecord,
   ApprovalWorkFlowTeacher,
   ApprovalWorkFlowHouse,
   ApproveCrawledProperty,
