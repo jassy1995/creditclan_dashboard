@@ -36,6 +36,27 @@ exports.getTeacherComment = async (req, res) => {
   }
 };
 
+exports.getAllTeachersLoan = async (req, res) => {
+  try {
+    let results = await Teacher.findAll({
+      offset: req.body.start,
+      limit: 20,
+    });
+
+    const sorted = results.sort((a, b) =>
+      new Date(a.created_at) > new Date(b.created_at)
+        ? -1
+        : new Date(a.created_at) < new Date(b.created_at)
+        ? 1
+        : 0
+    );
+
+    return res.json(sorted);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.preApprovalWorkFlowTeacher = async (req, res) => {
   const { user_id, request_id, action, category } = req.body;
   try {
