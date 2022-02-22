@@ -7,7 +7,7 @@ router.post(
   "/api/restaurant-detail/searchItem",
   Controller.getSearchRestaurants
 );
-router.post("/api/approve", Controller.approveRestaurants);
+// router.post("/api/approve", Controller.approveRestaurants);
 router.post("/api/comment", Controller.commentRestaurantMethod);
 router.post("/api/update-restaurant-record", Controller.updateRestaurantRecord);
 router.post("/api/get-restaurant-comment", Controller.getAllRestaurantComment);
