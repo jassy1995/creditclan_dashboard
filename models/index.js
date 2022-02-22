@@ -103,11 +103,7 @@ const ApprovalWorkFlowSchool = require("./school-workflow.model")(
   DataTypes,
   Sequelize
 );
-const Teacher = require("./teacher-workflow.model")(
-  sequelize,
-  DataTypes,
-  Sequelize
-);
+const Teacher = require("./teachers.model")(sequelize, DataTypes, Sequelize);
 module.exports = {
   Teacher,
   ApprovalWorkFlowSchool,
