@@ -5,6 +5,7 @@ const {
   preApprovalWorkFlowTeacher,
   getAllTeachersLoan,
   getSummaryOfRequestStageTeacher,
+  getEachRequestFlow,
 } = require("../controllers/teacher.controller");
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.get(
   "/api/get-summary-workflow-teacher",
   getSummaryOfRequestStageTeacher
 );
+router.post("/api/get-each-request-flow", getEachRequestFlow);
 
 module.exports = router;

@@ -130,6 +130,17 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
   }
 };
 
+exports.getEachRequestFlow = async (req, res) => {
+  try {
+    let results = await ApprovalWorkFlowTeacher.findAll({
+      where: { request_id: req.body.request_id },
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.getSummaryOfRequestStageTeacher = async (req, res) => {
   try {
     let val = await Teacher.findAll({
