@@ -314,7 +314,7 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       where: { category: "restaurant" },
     });
 
-    for (let i = 0; i < flow.length; i++) {
+    for (let i = 1; i < flow.length; i++) {
       let verify = val.find((element) => {
         return element.stage == i;
       });

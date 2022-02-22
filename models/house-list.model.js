@@ -8,12 +8,7 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
         allowNull: false,
         autoIncrement: true,
       },
-      date_added: {
-        type: DataTypes.DATEONLY,
-      },
-      date_modified: {
-        type: DataTypes.TEXT,
-      },
+
       landlord_id: {
         type: DataTypes.TEXT,
       },
@@ -114,11 +109,17 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
       phone: {
         type: DataTypes.TEXT,
       },
+      step: {
+        type: DataTypes.INTEGER,
+      },
       is_approved: {
-        type: DataTypes.STRING,
+        type: DataTypes.INTEGER,
       },
       date_added: {
         type: DataTypes.DATE,
+      },
+      date_modified: {
+        type: DataTypes.TEXT,
       },
     },
     { timestamps: false }

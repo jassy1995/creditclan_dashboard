@@ -2,6 +2,8 @@ const {
   ListHouse,
   ApproveHouse,
   CommentHouse,
+  ApproveFlow,
+  // ApprovalWorkFlowHouse,
   ApprovalWorkFlowHouse,
   Sequelize,
 } = require("../models");
@@ -13,7 +15,15 @@ exports.getAllHouse = async (req, res) => {
       offset: req.body.start,
       limit: 20,
     });
-    return res.json(results);
+
+    const sorted = results.sort((a, b) =>
+      new Date(a.date_added) > new Date(b.date_added)
+        ? -1
+        : new Date(a.date_added) < new Date(b.date_added)
+        ? 1
+        : 0
+    );
+    return res.json(sorted);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
@@ -31,42 +41,73 @@ exports.getSearchHouse = async (req, res) => {
 };
 
 exports.approveHouse = async (req, res) => {
-  const { user_id, house_id } = req.body;
+  const { user_id, request_id, action, category } = req.body;
   try {
-    let checkUser = await ApproveHouse.findOne({
-      where: { house_id },
+    const checker = await ApproveFlow.findAll({ where: { category } });
+    const ch = await ApprovalWorkFlowHouse.findAll({
+      where: { request_id },
     });
-    if (checkUser === null)
-      await ApproveHouse.create({
-        bm_id: null,
-        manager_id: null,
-        house_id,
-        date: null,
-        is_approved: "-1",
-      });
-    const ch = await ApproveHouse.findOne({ where: { house_id } });
-    if (ch.is_approved == "-1") {
-      await ApproveHouse.update(
-        { bm_id: user_id, is_approved: "0", date: Date.now() },
-        +{ where: { house_id } }
-      );
-      await ListHouse.update({ is_approved: "0" }, { where: { id: house_id } });
-      let house = await ListHouse.findOne({
-        where: { id: house_id },
-      });
-      return res.json({ result: "0", house });
-    } else if (ch.is_approved == "0") {
-      await ApproveHouse.update(
-        { is_approved: "1", manager_id: user_id },
-        { where: { house_id } }
-      );
-      await ListHouse.update({ is_approved: "1" }, { where: { id: house_id } });
-      let house = await ListHouse.findOne({
-        where: { id: house_id },
-      });
-      return res.json({ result: "1", house });
-    } else if (ch?.is_approved == "1") {
-      return res.json({ result: "done", house_id });
+    const checkHouse = await ListHouse.findOne({
+      where: { id: request_id },
+    });
+
+    if (ch.length == 0) {
+      try {
+        await ApprovalWorkFlowHouse.create({
+          user_id: user_id,
+          action: action,
+          request_id,
+          pre_step: 1,
+          date: Date.now(),
+        });
+        await ListHouse.update({ step: 1 }, { where: { id: request_id } });
+        let request2 = await ListHouse.findOne({
+          where: { id: request_id },
+        });
+
+        return res.json({ house: request2, message: "updated" });
+      } catch (error) {
+        return res.json({ error });
+      }
+    } else if (
+      ch[ch.length - 1].pre_step < checker.length &&
+      checkHouse?.is_approved !== 1
+    ) {
+      try {
+        await ApprovalWorkFlowHouse.create({
+          user_id: user_id,
+          action: action,
+          request_id,
+          pre_step: ch[ch.length - 1].pre_step + 1,
+          date: Date.now(),
+        });
+        await ListHouse.update(
+          { step: ch[ch.length - 1].pre_step + 1 },
+          { where: { id: request_id } }
+        );
+        const checkEnd = await ApprovalWorkFlowHouse.findAll({
+          where: { request_id },
+        });
+        if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
+          await ListHouse.update(
+            { is_approved: 1 },
+            { where: { id: request_id } }
+          );
+        }
+
+        let request2 = await ListHouse.findOne({
+          where: { id: request_id },
+        });
+
+        return res.json({
+          house: request2,
+          message: "updated",
+        });
+      } catch (error) {
+        return res.json({ error });
+      }
+    } else {
+      return res.json({ message: "nothing to update" });
     }
   } catch (error) {
     console.log(error);
@@ -117,6 +158,53 @@ exports.getAllHouseComment = async (req, res) => {
     );
     return res.json(results);
   } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getEachRequestFlow = async (req, res) => {
+  try {
+    let results = await ApprovalWorkFlowHouse.findAll({
+      where: { request_id: req.body.request_id },
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getSummaryOfRequestStageHouse = async (req, res) => {
+  try {
+    let val = await ListHouse.findAll({
+      group: ["step"],
+      attributes: [
+        ["step", "stage"],
+        [Sequelize.fn("COUNT", "step"), "count"],
+      ],
+      order: [[Sequelize.literal("count"), "DESC"]],
+      raw: true,
+    });
+
+    let flow = await ApproveFlow.findAll({
+      where: { category: "teacher" },
+    });
+
+    for (let i = 1; i < flow.length; i++) {
+      let verify = val.find((element) => {
+        return element.stage == i;
+      });
+
+      if (!verify) {
+        val.push({
+          stage: i,
+          count: 0,
+        });
+      }
+    }
+
+    return res.json(val);
+  } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
