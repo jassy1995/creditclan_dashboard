@@ -163,6 +163,9 @@ exports.preApprovalWorkFlow = async (req, res) => {
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
+    const checkTeacher = await Restaurant.findOne({
+      where: { id: request_id },
+    });
 
     if (ch.length == 0) {
       try {
@@ -182,7 +185,10 @@ exports.preApprovalWorkFlow = async (req, res) => {
       } catch (error) {
         return res.json({ error });
       }
-    } else if (ch[ch.length - 1].pre_step < checker.length) {
+    } else if (
+      ch[ch.length - 1].pre_step < checker.length &&
+      checkTeacher?.is_approved !== 1
+    ) {
       try {
         await ApprovalWorkFlow.create({
           user_id: user_id,
@@ -193,9 +199,19 @@ exports.preApprovalWorkFlow = async (req, res) => {
         });
 
         await Restaurant.update(
-          { step: ch[ch.length - 1].pre_step + 1, is_approved: 1 },
+          { step: ch[ch.length - 1].pre_step + 1 },
           { where: { id: request_id } }
         );
+
+        const checkEnd = await ApprovalWorkFlowTeacher.findAll({
+          where: { request_id },
+        });
+        if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
+          await Restaurant.update(
+            { is_approved: 1 },
+            { where: { id: request_id } }
+          );
+        }
         let request2 = await Restaurant.findOne({
           where: { id: request_id },
         });
@@ -214,6 +230,79 @@ exports.preApprovalWorkFlow = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+
+// exports.preApprovalWorkFlowTeacher = async (req, res) => {
+//   const { user_id, request_id, action, category } = req.body;
+//   try {
+//     const checker = await ApproveFlow.findAll({ where: { category } });
+//     const ch = await ApprovalWorkFlowTeacher.findAll({ where: { request_id } });
+//     const checkTeacher = await Teacher.findOne({
+//       where: { id: request_id },
+//     });
+
+//     if (ch.length == 0) {
+//       try {
+//         await ApprovalWorkFlowTeacher.create({
+//           user_id: user_id,
+//           action: action,
+//           request_id,
+//           pre_step: 1,
+//           date: Date.now(),
+//         });
+//         await Teacher.update({ step: 1 }, { where: { id: request_id } });
+//         let request2 = await Teacher.findOne({
+//           where: { id: request_id },
+//         });
+
+//         return res.json({ restaurant: request2, message: "updated" });
+//       } catch (error) {
+//         return res.json({ error });
+//       }
+//     } else if (
+//       ch[ch.length - 1].pre_step < checker.length &&
+//       checkTeacher?.is_approved !== 1
+//     ) {
+//       try {
+//         await ApprovalWorkFlowTeacher.create({
+//           user_id: user_id,
+//           action: action,
+//           request_id,
+//           pre_step: ch[ch.length - 1].pre_step + 1,
+//           date: Date.now(),
+//         });
+//         await Teacher.update(
+//           { step: ch[ch.length - 1].pre_step + 1 },
+//           { where: { id: request_id } }
+//         );
+//         const checkEnd = await ApprovalWorkFlowTeacher.findAll({
+//           where: { request_id },
+//         });
+//         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
+//           await Teacher.update(
+//             { is_approved: 1 },
+//             { where: { id: request_id } }
+//           );
+//         }
+
+//         let request2 = await Teacher.findOne({
+//           where: { id: request_id },
+//         });
+
+//         return res.json({
+//           restaurant: request2,
+//           message: "updated",
+//         });
+//       } catch (error) {
+//         return res.json({ error });
+//       }
+//     } else {
+//       return res.json({ message: "nothing to update" });
+//     }
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ error, message: "error occur" });
+//   }
+// };
 
 exports.getAllFlowRestaurantFlow = async (req, res) => {
   try {
