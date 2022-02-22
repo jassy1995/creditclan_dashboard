@@ -74,7 +74,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
             { step: ch[ch.length - 1].pre_step + 1 },
             { where: { id: request_id } }
           );
-        } else if (ch[ch.length - 1].pre_step == checker.length) {
+        } else if (ch[ch.length - 1].pre_step === checker.length) {
           await ApprovalWorkFlowTeacher.create({
             user_id: user_id,
             action: action,
@@ -83,7 +83,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
             date: Date.now(),
           });
           await Teacher.update(
-            { step: ch[ch.length - 1].pre_step + 1, is_approved: 1 },
+            { is_approved: 1 },
             { where: { id: request_id } }
           );
         }
