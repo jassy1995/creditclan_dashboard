@@ -51,7 +51,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        await Restaurant.update({ step: 1 }, { where: { id: request_id } });
+        await Teacher.update({ step: 1 }, { where: { id: request_id } });
         let request2 = await Teacher.findOne({
           where: { id: request_id },
         });
