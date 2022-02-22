@@ -129,3 +129,38 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+
+exports.getSummaryOfRequestStage = async (req, res) => {
+  try {
+    let val = await Teacher.findAll({
+      group: ["step"],
+      attributes: [
+        ["step", "stage"],
+        [Sequelize.fn("COUNT", "step"), "count"],
+      ],
+      order: [[Sequelize.literal("count"), "DESC"]],
+      raw: true,
+    });
+
+    let flow = await ApproveFlow.findAll({
+      where: { category: "teacher" },
+    });
+
+    for (let i = 0; i < flow.length; i++) {
+      let verify = val.find((element) => {
+        return element.stage == i;
+      });
+
+      if (!verify) {
+        val.push({
+          stage: i,
+          count: 0,
+        });
+      }
+    }
+
+    return res.json(val);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
