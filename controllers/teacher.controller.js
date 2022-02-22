@@ -41,7 +41,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlowTeacher.findAll({ where: { request_id } });
-    const checkTeacher = await TeamTeacher.findOne({
+    const checkTeacher = await Teacher.findOne({
       where: { id: request_id },
     });
 
