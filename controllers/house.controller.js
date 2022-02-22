@@ -186,7 +186,7 @@ exports.getSummaryOfRequestStageHouse = async (req, res) => {
     });
 
     let flow = await ApproveFlow.findAll({
-      where: { category: "teacher" },
+      where: { category: "house" },
     });
 
     for (let i = 1; i < flow.length; i++) {
