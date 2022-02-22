@@ -20,7 +20,7 @@ const Teacher = (sequelize, DataTypes, Sequelize) =>
       phone: {
         type: DataTypes.TEXT,
       },
-      salary: {
+      loan_amount: {
         type: DataTypes.TEXT,
       },
       loan_request_link: {
