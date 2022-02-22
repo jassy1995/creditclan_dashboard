@@ -41,6 +41,9 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlowTeacher.findAll({ where: { request_id } });
+    const checkTeacher = await TeamTeacher.findOne({
+      where: { id: request_id },
+    });
 
     if (ch.length == 0) {
       try {
@@ -60,7 +63,10 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
       } catch (error) {
         return res.json({ error });
       }
-    } else if (ch[ch.length - 1].pre_step <= checker.length) {
+    } else if (
+      ch[ch.length - 1].pre_step < checker.length &&
+      checkTeacher?.is_approved !== 1
+    ) {
       try {
         await ApprovalWorkFlowTeacher.create({
           user_id: user_id,
