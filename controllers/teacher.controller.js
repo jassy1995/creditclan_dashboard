@@ -60,7 +60,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
       } catch (error) {
         return res.json({ error });
       }
-    } else if (ch[ch.length - 1].pre_step < checker.length) {
+    } else if (ch[ch.length - 1].pre_step <= checker.length) {
       try {
         if (ch[ch.length - 1].pre_step < checker.length) {
           await ApprovalWorkFlowTeacher.create({
