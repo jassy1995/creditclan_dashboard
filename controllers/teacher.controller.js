@@ -62,31 +62,27 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
       }
     } else if (ch[ch.length - 1].pre_step <= checker.length) {
       try {
-        if (ch[ch.length - 1].pre_step < checker.length) {
-          await ApprovalWorkFlowTeacher.create({
-            user_id: user_id,
-            action: action,
-            request_id,
-            pre_step: ch[ch.length - 1].pre_step + 1,
-            date: Date.now(),
-          });
-          await Teacher.update(
-            { step: ch[ch.length - 1].pre_step + 1 },
-            { where: { id: request_id } }
-          );
-        } else if (ch[ch.length - 1].pre_step === checker.length) {
-          await ApprovalWorkFlowTeacher.create({
-            user_id: user_id,
-            action: action,
-            request_id,
-            pre_step: ch[ch.length - 1].pre_step + 1,
-            date: Date.now(),
-          });
+        await ApprovalWorkFlowTeacher.create({
+          user_id: user_id,
+          action: action,
+          request_id,
+          pre_step: ch[ch.length - 1].pre_step + 1,
+          date: Date.now(),
+        });
+        await Teacher.update(
+          { step: ch[ch.length - 1].pre_step + 1 },
+          { where: { id: request_id } }
+        );
+        const checkEnd = await ApprovalWorkFlowTeacher.findAll({
+          where: { request_id },
+        });
+        if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
           await Teacher.update(
             { is_approved: 1 },
             { where: { id: request_id } }
           );
         }
+
         let request2 = await Teacher.findOne({
           where: { id: request_id },
         });
