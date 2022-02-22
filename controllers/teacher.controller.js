@@ -2,6 +2,7 @@ const {
   CommentTeacherLoan,
   ApprovalWorkFlowTeacher,
   ApproveFlow,
+  Sequelize,
   Teacher,
 } = require("../models");
 exports.teacherLoanComment = async (req, res) => {
