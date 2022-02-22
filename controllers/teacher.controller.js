@@ -130,7 +130,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
   }
 };
 
-exports.getSummaryOfRequestStage = async (req, res) => {
+exports.getSummaryOfRequestStageTeacher = async (req, res) => {
   try {
     let val = await Teacher.findAll({
       group: ["step"],
