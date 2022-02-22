@@ -6,7 +6,6 @@ const {
   getAllTeachersLoan,
   getSummaryOfRequestStageTeacher,
   getEachRequestFlow,
-  getSummaryOfRequestStageTeacher,
 } = require("../controllers/teacher.controller");
 const router = express.Router();
 
