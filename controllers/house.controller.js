@@ -77,7 +77,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: request2.data,
+          response: request2.data.response.data,
           message: "updated",
         });
       } catch (error) {
@@ -103,9 +103,9 @@ exports.approveHouse = async (req, res) => {
         await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
-            request_id: request_id,
+            list_id: request_id,
             step: ch[ch.length - 1].pre_step + 1,
-            is_approved: "",
+            is_approve: "",
           }
         );
         const checkEnd = await ApprovalWorkFlowHouse.findAll({
@@ -119,9 +119,9 @@ exports.approveHouse = async (req, res) => {
           await axios.post(
             "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
             {
-              request_id: request_id,
+              list_id: request_id,
               step: "",
-              is_approved: 1,
+              is_approve: 1,
             }
           );
         }
@@ -135,7 +135,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: checkHouse2.data,
+          response: checkHouse2.data.data,
           message: "updated",
         });
       } catch (error) {
