@@ -1,10 +1,8 @@
 const axios = require("axios");
 const {
   ListHouse,
-  ApproveHouse,
   CommentHouse,
   ApproveFlow,
-  // ApprovalWorkFlowHouse,
   ApprovalWorkFlowHouse,
   Sequelize,
 } = require("../models");
@@ -72,9 +70,9 @@ exports.approveHouse = async (req, res) => {
         const request2 = await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
-            request_id: request_id,
+            list_id: request_id,
             step: 1,
-            is_approved: "",
+            is_approve: "",
           }
         );
 
@@ -209,38 +207,38 @@ exports.getEachRequestFlow = async (req, res) => {
   }
 };
 
-exports.getSummaryOfRequestStageHouse = async (req, res) => {
-  try {
-    let val = await ListHouse.findAll({
-      group: ["step"],
-      attributes: [
-        ["step", "stage"],
-        [Sequelize.fn("COUNT", "step"), "count"],
-      ],
-      order: [[Sequelize.literal("count"), "DESC"]],
-      raw: true,
-    });
+// exports.getSummaryOfRequestStageHouse = async (req, res) => {
+//   try {
+//     let val = await ListHouse.findAll({
+//       group: ["step"],
+//       attributes: [
+//         ["step", "stage"],
+//         [Sequelize.fn("COUNT", "step"), "count"],
+//       ],
+//       order: [[Sequelize.literal("count"), "DESC"]],
+//       raw: true,
+//     });
 
-    let flow = await ApproveFlow.findAll({
-      where: { category: "house" },
-    });
+//     let flow = await ApproveFlow.findAll({
+//       where: { category: "house" },
+//     });
 
-    for (let i = 1; i < flow.length; i++) {
-      let verify = val.find((element) => {
-        return element.stage == i;
-      });
+//     for (let i = 1; i < flow.length; i++) {
+//       let verify = val.find((element) => {
+//         return element.stage == i;
+//       });
 
-      if (!verify) {
-        val.push({
-          stage: i,
-          count: 0,
-        });
-      }
-    }
+//       if (!verify) {
+//         val.push({
+//           stage: i,
+//           count: 0,
+//         });
+//       }
+//     }
 
-    return res.json(val);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({ error, message: "error occur" });
-  }
-};
+//     return res.json(val);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json({ error, message: "error occur" });
+//   }
+// };
