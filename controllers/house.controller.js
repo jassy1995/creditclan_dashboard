@@ -54,6 +54,7 @@ exports.approveHouse = async (req, res) => {
       `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
     );
     // https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent
+    console.log(checkHouse.data);
     if (ch.length == 0) {
       try {
         await ApprovalWorkFlowHouse.create({
@@ -75,9 +76,9 @@ exports.approveHouse = async (req, res) => {
             is_approve: "",
           }
         );
-
+        console.log(request2.data);
         return res.json({
-          response: request2.data.response.data,
+          response: request2.data.response,
           message: "updated",
         });
       } catch (error) {
@@ -86,7 +87,7 @@ exports.approveHouse = async (req, res) => {
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      checkHouse.data.data?.is_approved !== 1
+      checkHouse.data?.is_approved !== 1
     ) {
       try {
         await ApprovalWorkFlowHouse.create({
