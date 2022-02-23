@@ -81,6 +81,7 @@ exports.approveHouse = async (req, res) => {
           message: "updated",
         });
       } catch (error) {
+        console.log(error);
         return res.json({ error });
       }
     } else if (
@@ -138,6 +139,7 @@ exports.approveHouse = async (req, res) => {
           message: "updated",
         });
       } catch (error) {
+        console.log(error);
         return res.json({ error });
       }
     } else {
