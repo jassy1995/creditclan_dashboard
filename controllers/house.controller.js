@@ -79,7 +79,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: request2.data.response,
+          response: request2,
           message: "updated",
         });
       } catch (error) {
@@ -136,7 +136,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: checkHouse2.data.data,
+          response: checkHouse2,
           message: "updated",
         });
       } catch (error) {
