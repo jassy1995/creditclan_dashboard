@@ -53,8 +53,7 @@ exports.approveHouse = async (req, res) => {
     const checkHouse = await axios.get(
       `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
     );
-    // https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent
-    console.log(checkHouse.data.data);
+
     if (ch.length == 0) {
       try {
         await ApprovalWorkFlowHouse.create({
@@ -64,10 +63,6 @@ exports.approveHouse = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        // await ListHouse.update({ step: 1 }, { where: { id: request_id } });
-        // let request2 = await ListHouse.findOne({
-        //   where: { id: request_id },
-        // });
         const request2 = await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
@@ -76,7 +71,7 @@ exports.approveHouse = async (req, res) => {
             is_approve: "",
           }
         );
-        console.log(request2.data);
+
         return res.json({
           response: request2.data.data,
           message: "updated",
