@@ -109,7 +109,13 @@ const ApprovalWorkFlowRent = require("./rent-workflow.model")(
   DataTypes,
   Sequelize
 );
+const ApprovalWorkFlowAgent = require("./agent-workflow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  ApprovalWorkFlowAgent,
   ApprovalWorkFlowRent,
   Teacher,
   ApprovalWorkFlowSchool,

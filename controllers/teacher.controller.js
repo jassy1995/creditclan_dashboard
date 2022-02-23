@@ -1,3 +1,4 @@
+const axios = require("axios");
 const {
   CommentTeacherLoan,
   ApprovalWorkFlowTeacher,
@@ -63,9 +64,10 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlowTeacher.findAll({ where: { request_id } });
-    const checkTeacher = await Teacher.findOne({
-      where: { id: request_id },
-    });
+    const checkTeacher = await axios.post(
+      "https://sellbackend.creditclan.com/parent/index.php/parents/request_teacher",
+      { request_id }
+    );
 
     if (ch.length == 0) {
       try {
@@ -76,18 +78,31 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        await Teacher.update({ step: 1 }, { where: { id: request_id } });
-        let request2 = await Teacher.findOne({
-          where: { id: request_id },
-        });
 
-        return res.json({ restaurant: request2, message: "updated" });
+        const updatedOne = await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          {
+            request_id: request_id,
+            step: 1,
+            is_approved: "",
+          }
+        );
+
+        // await Teacher.update({ step: 1 }, { where: { id: request_id } });
+        // let request2 = await Teacher.findOne({
+        //   where: { id: request_id },
+        // });
+
+        return res.json({
+          response: updatedOne.data.request,
+          message: "updated",
+        });
       } catch (error) {
         return res.json({ error });
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      checkTeacher?.is_approved !== 1
+      Number(checkTeacher.data.request.is_approved) !== 1
     ) {
       try {
         await ApprovalWorkFlowTeacher.create({
@@ -97,26 +112,46 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
-        await Teacher.update(
-          { step: ch[ch.length - 1].pre_step + 1 },
-          { where: { id: request_id } }
+        await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          {
+            request_id: request_id,
+            step: ch[ch.length - 1].pre_step + 1,
+            is_approved: "",
+          }
         );
+        // await Teacher.update(
+        //   { step: ch[ch.length - 1].pre_step + 1 },
+        //   { where: { id: request_id } }
+        // );
         const checkEnd = await ApprovalWorkFlowTeacher.findAll({
           where: { request_id },
         });
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
-          await Teacher.update(
-            { is_approved: 1 },
-            { where: { id: request_id } }
+          await axios.post(
+            "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+            {
+              request_id: request_id,
+              step: "",
+              is_approved: 1,
+            }
           );
+          //   await Teacher.update(
+          //     { is_approved: 1 },
+          //     { where: { id: request_id } }
+          //   );
         }
+        const checkTeacher2 = await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/parents/request_teacher",
+          { request_id }
+        );
 
-        let request2 = await Teacher.findOne({
-          where: { id: request_id },
-        });
+        // let request2 = await Teacher.findOne({
+        //   where: { id: request_id },
+        // });
 
         return res.json({
-          restaurant: request2,
+          response: checkTeacher2.data.request,
           message: "updated",
         });
       } catch (error) {

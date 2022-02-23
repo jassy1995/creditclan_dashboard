@@ -1,5 +1,5 @@
-const ApprovalWorkFlowRent = (sequelize, DataTypes, Sequelize) =>
-  sequelize.define("approval_workflow_rent", {
+const ApprovalWorkFlowAgent = (sequelize, DataTypes, Sequelize) =>
+  sequelize.define("approval_workflow_agent", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -23,4 +23,4 @@ const ApprovalWorkFlowRent = (sequelize, DataTypes, Sequelize) =>
     },
   });
 
-module.exports = ApprovalWorkFlowRent;
+module.exports = ApprovalWorkFlowAgent;

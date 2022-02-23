@@ -1,3 +1,4 @@
+const axios = require("axios");
 const {
   ListHouse,
   ApproveHouse,
@@ -47,10 +48,14 @@ exports.approveHouse = async (req, res) => {
     const ch = await ApprovalWorkFlowHouse.findAll({
       where: { request_id },
     });
-    const checkHouse = await ListHouse.findOne({
-      where: { id: request_id },
-    });
+    // const checkHouse = await ListHouse.findOne({
+    //   where: { id: request_id },
+    // });
 
+    const checkHouse = await axios.get(
+      `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
+    );
+    // https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent
     if (ch.length == 0) {
       try {
         await ApprovalWorkFlowHouse.create({
@@ -60,18 +65,29 @@ exports.approveHouse = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        await ListHouse.update({ step: 1 }, { where: { id: request_id } });
-        let request2 = await ListHouse.findOne({
-          where: { id: request_id },
-        });
+        // await ListHouse.update({ step: 1 }, { where: { id: request_id } });
+        // let request2 = await ListHouse.findOne({
+        //   where: { id: request_id },
+        // });
+        const request2 = await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          {
+            request_id: request_id,
+            step: 1,
+            is_approved: "",
+          }
+        );
 
-        return res.json({ house: request2, message: "updated" });
+        return res.json({
+          response: request2.data.request,
+          message: "updated",
+        });
       } catch (error) {
         return res.json({ error });
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      checkHouse?.is_approved !== 1
+      checkHouse.data.request?.is_approved !== 1
     ) {
       try {
         await ApprovalWorkFlowHouse.create({
@@ -81,26 +97,46 @@ exports.approveHouse = async (req, res) => {
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
-        await ListHouse.update(
-          { step: ch[ch.length - 1].pre_step + 1 },
-          { where: { id: request_id } }
+        // await ListHouse.update(
+        //   { step: ch[ch.length - 1].pre_step + 1 },
+        //   { where: { id: request_id } }
+        // );
+        await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          {
+            request_id: request_id,
+            step: ch[ch.length - 1].pre_step + 1,
+            is_approved: "",
+          }
         );
         const checkEnd = await ApprovalWorkFlowHouse.findAll({
           where: { request_id },
         });
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
-          await ListHouse.update(
-            { is_approved: 1 },
-            { where: { id: request_id } }
+          // await ListHouse.update(
+          //   { is_approved: 1 },
+          //   { where: { id: request_id } }
+          // );
+          await axios.post(
+            "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+            {
+              request_id: request_id,
+              step: "",
+              is_approved: 1,
+            }
           );
         }
 
-        let request2 = await ListHouse.findOne({
-          where: { id: request_id },
-        });
+        // let request2 = await ListHouse.findOne({
+        //   where: { id: request_id },
+        // });
+
+        const checkHouse2 = await axios.get(
+          `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
+        );
 
         return res.json({
-          house: request2,
+          response: checkHouse2.data.request,
           message: "updated",
         });
       } catch (error) {
