@@ -87,7 +87,7 @@ exports.approveHouse = async (req, res) => {
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      checkHouse.data.request?.is_approved !== 1
+      checkHouse.data.data?.is_approved !== 1
     ) {
       try {
         await ApprovalWorkFlowHouse.create({
@@ -136,7 +136,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: checkHouse2.data.request,
+          response: checkHouse2.data.data,
           message: "updated",
         });
       } catch (error) {
