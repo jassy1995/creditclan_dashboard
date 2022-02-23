@@ -70,7 +70,7 @@ exports.approveHouse = async (req, res) => {
         //   where: { id: request_id },
         // });
         const request2 = await axios.post(
-          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
             request_id: request_id,
             step: 1,
@@ -102,7 +102,7 @@ exports.approveHouse = async (req, res) => {
         //   { where: { id: request_id } }
         // );
         await axios.post(
-          "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+          "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
             request_id: request_id,
             step: ch[ch.length - 1].pre_step + 1,
@@ -118,7 +118,7 @@ exports.approveHouse = async (req, res) => {
           //   { where: { id: request_id } }
           // );
           await axios.post(
-            "https://sellbackend.creditclan.com/parent/index.php/parents/teacher_approval",
+            "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
             {
               request_id: request_id,
               step: "",
