@@ -79,7 +79,7 @@ exports.approveHouse = async (req, res) => {
         );
 
         return res.json({
-          response: request2.data.request,
+          response: request2.data.response,
           message: "updated",
         });
       } catch (error) {
