@@ -16,6 +16,7 @@ exports.getWorkFlow = async (req, res) => {
     let results = await ApprovalWorkFlow.findAll();
     return res.json(results);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
@@ -25,6 +26,7 @@ exports.saveWorkFlow = async (req, res) => {
     let results = await ApprovalWorkFlow.create({ action: req.body.action });
     return res.json(results);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
@@ -46,6 +48,7 @@ exports.getAllRestaurants = async (req, res) => {
 
     return res.json(sorted);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
@@ -57,6 +60,7 @@ exports.getSearchRestaurants = async (req, res) => {
     });
     return res.json(results);
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
 };
@@ -158,7 +162,7 @@ exports.getAllRestaurantComment = async (req, res) => {
   }
 };
 
-exports.preApprovalWorkFlow = async (req, res) => {
+exports.preApprovalWorkFlowRestaurant = async (req, res) => {
   const { user_id, request_id, action, category } = req.body;
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
@@ -183,6 +187,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
 
         return res.json({ restaurant: request2, message: "updated" });
       } catch (error) {
+        console.log(error);
         return res.json({ error });
       }
     } else if (
@@ -220,6 +225,7 @@ exports.preApprovalWorkFlow = async (req, res) => {
           message: "updated",
         });
       } catch (error) {
+        console.log(error);
         return res.json({ error });
       }
     } else {
