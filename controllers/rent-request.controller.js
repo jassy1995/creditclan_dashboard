@@ -47,7 +47,7 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
       { rent_id: request_id }
     );
 
-    if (ch.length == 0) {
+    if (ch.length == 0 && checker.length !== 0) {
       try {
         await ApprovalWorkFlowRent.create({
           user_id,
