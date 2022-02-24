@@ -208,7 +208,7 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
           { where: { id: request_id } }
         );
 
-        const checkEnd = await ApprovalWorkFlowTeacher.findAll({
+        const checkEnd = await ApprovalWorkFlow.findAll({
           where: { request_id },
         });
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
