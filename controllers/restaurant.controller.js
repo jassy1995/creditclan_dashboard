@@ -149,14 +149,25 @@ exports.updateRestaurantRecord = async (req, res) => {
 
 exports.getAllRestaurantComment = async (req, res) => {
   try {
-    let results = await CommentRestaurant.findAll(
-      {
+    //   let results = await CommentRestaurant.findAll(
+    //     {
+    //       offset: req.body.start,
+    //       limit: 10,
+    //     },
+    //     { where: { restaurant_id: req.body.request_id } }
+    //   );
+    //   return res.json(results);
+    try {
+      let results = await CommentRestaurant.findAll({
         offset: req.body.start,
         limit: 10,
-      },
-      { where: { restaurant_id: req.body.request_id } }
-    );
-    return res.json(results);
+
+        where: { restaurant_id: req.body.request_id },
+      });
+      return res.json(results);
+    } catch (error) {
+      return res.status(500).json({ error, message: "error occur" });
+    }
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
