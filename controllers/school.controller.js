@@ -24,13 +24,19 @@ exports.schoolLoanComment = async (req, res) => {
 
 exports.getAllSchoolComment = async (req, res) => {
   try {
-    let results = await CommentSchoolLoan.findAll(
-      {
-        offset: req.body.start,
-        limit: 10,
-      },
-      { where: { request_id: req.body.request_id } }
-    );
+    // let results = await CommentSchoolLoan.findAll(
+    //   {
+    //     offset: req.body.start,
+    //     limit: 10,
+    //   },
+    //   { where: { request_id: req.body.request_id } }
+    // );
+    let results = await CommentSchoolLoan.findAll({
+      offset: req.body.start,
+      limit: 10,
+
+      where: { request_id: req.body.request_id },
+    });
     return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
