@@ -128,7 +128,7 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
         return res.json({ error });
       }
     } else {
-      return res.json({ message: "nothing to update" });
+      return res.json({ message: "nothing to approve!" });
     }
   } catch (error) {
     console.log(error);

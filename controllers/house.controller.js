@@ -54,7 +54,7 @@ exports.approveHouse = async (req, res) => {
       `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
     );
 
-    if (ch.length == 0) {
+    if (ch.length == 0 && checker.length !== 0) {
       try {
         await ApprovalWorkFlowHouse.create({
           user_id: user_id,
@@ -139,7 +139,7 @@ exports.approveHouse = async (req, res) => {
         return res.json({ error });
       }
     } else {
-      return res.json({ message: "nothing to update" });
+      return res.json({ message: "nothing to approve!" });
     }
   } catch (error) {
     console.log(error);
