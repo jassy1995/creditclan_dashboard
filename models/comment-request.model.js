@@ -20,8 +20,8 @@ const CommentRequest = (sequelize, DataTypes, Sequelize) =>
       date: {
         type: DataTypes.DATEONLY,
       },
-    },
-    { timestamps: false }
+    }
+    // { timestamps: false }
   );
 
 module.exports = CommentRequest;
