@@ -1,23 +1,27 @@
 const CommentRequest = (sequelize, DataTypes, Sequelize) =>
-  sequelize.define("comment_request", {
-    id: {
-      type: DataTypes.INTEGER,
-      primaryKey: true,
-      allowNull: false,
-      autoIncrement: true,
+  sequelize.define(
+    "comment_request",
+    {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        allowNull: false,
+        autoIncrement: true,
+      },
+      user_id: {
+        type: DataTypes.TEXT,
+      },
+      request_id: {
+        type: DataTypes.TEXT,
+      },
+      comment: {
+        type: DataTypes.TEXT,
+      },
+      date: {
+        type: DataTypes.DATEONLY,
+      },
     },
-    user_id: {
-      type: DataTypes.TEXT,
-    },
-    request_id: {
-      type: DataTypes.TEXT,
-    },
-    comment: {
-      type: DataTypes.TEXT,
-    },
-    date: {
-      type: DataTypes.DATEONLY,
-    },
-  });
+    { timestamps: false }
+  );
 
 module.exports = CommentRequest;
