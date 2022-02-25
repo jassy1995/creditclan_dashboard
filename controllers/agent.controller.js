@@ -1,5 +1,9 @@
 const axios = require("axios");
-const { ApprovalWorkFlowAgent, ApproveFlow } = require("../models");
+const {
+  ApprovalWorkFlowAgent,
+  ApproveFlow,
+  CommentAgent,
+} = require("../models");
 
 exports.preApprovalWorkFlowAgent = async (req, res) => {
   const { user_id, request_id, action, category } = req.body;
@@ -131,5 +135,35 @@ exports.InsertFlow = async (req, res) => {
     return res.json(result);
   } catch (error) {
     console.log(error);
+  }
+};
+
+exports.agentComment = async (req, res) => {
+  const { comment, user_id, request_id } = req.body;
+  try {
+    const result = await CommentAgent.create({
+      comment,
+      user_id,
+      request_id,
+      date: Date.now(),
+    });
+    if (result.comment) return res.json("sent");
+    else return res.json("sending failed");
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getAgentComment = async (req, res) => {
+  try {
+    let results = await CommentAgent.findAll({
+      offset: req.body.start,
+      limit: 10,
+      where: { request_id: req.body.request_id },
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
   }
 };

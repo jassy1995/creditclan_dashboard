@@ -114,7 +114,13 @@ const ApprovalWorkFlowAgent = require("./agent-workflow.model")(
   DataTypes,
   Sequelize
 );
+const CommentAgent = require("./comment-agent.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  CommentAgent,
   ApprovalWorkFlowAgent,
   ApprovalWorkFlowRent,
   Teacher,
