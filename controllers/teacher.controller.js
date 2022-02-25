@@ -94,11 +94,6 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
           }
         );
 
-        // await Teacher.update({ step: 1 }, { where: { id: request_id } });
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
-
         return res.json({
           response: updatedOne.data.request,
           message: "updated",
@@ -126,10 +121,7 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
             is_approved: "",
           }
         );
-        // await Teacher.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
+
         const checkEnd = await ApprovalWorkFlowTeacher.findAll({
           where: { request_id },
         });
@@ -142,19 +134,11 @@ exports.preApprovalWorkFlowTeacher = async (req, res) => {
               is_approved: 1,
             }
           );
-          //   await Teacher.update(
-          //     { is_approved: 1 },
-          //     { where: { id: request_id } }
-          //   );
         }
         const checkTeacher2 = await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/parents/request_teacher",
           { request_id }
         );
-
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
 
         return res.json({
           response: checkTeacher2.data.request,

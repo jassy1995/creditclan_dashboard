@@ -1,39 +1,55 @@
 const axios = require("axios");
 const { ApprovalWorkFlowAgent, ApproveFlow } = require("../models");
 
-exports.preApprovalWorkFlowRent = async (req, res) => {
+exports.preApprovalWorkFlowAgent = async (req, res) => {
   const { user_id, request_id, action, category } = req.body;
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
-    const ch = await ApprovalWorkFlowRent.findAll({ where: { request_id } });
-    const { data } = await axios.post(
-      "https://wema.creditclan.com/api/v3/rent/rentrequest",
-      { rent_id: request_id }
+    const ch = await ApprovalWorkFlowAgent.findAll({ where: { request_id } });
+    const { data } = await axios.get(
+      `https://sellbackend.creditclan.com/parent/index.php/rent/get_agents/${request_id}`
     );
 
-    if (ch.length == 0) {
+    if (
+      ch.length == 0 &&
+      checker.length !== 0 &&
+      Number(data?.data[0]?.is_approved) !== 1
+    ) {
       try {
-        await ApprovalWorkFlowRent.create({
+        await ApprovalWorkFlowAgent.create({
           user_id,
           action,
           request_id,
           pre_step: 1,
           date: Date.now(),
         });
-        // await Teacher.update({ step: 1 }, { where: { id: request_id } });
-        const updatedOne = await axios.post(
-          "https://wema.creditclan.com/api/v3/rent/update_request_step",
+
+        await axios.post(
+          "https://sellbackend.creditclan.com/parent/index.php/rent/approve_agent",
           {
-            rent_id: request_id,
+            agent_id: request_id,
             step: 1,
+            is_approve: "",
           }
         );
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
-
+        const checkEnd = await ApprovalWorkFlowAgent.findAll({
+          where: { request_id },
+        });
+        if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
+          await axios.post(
+            "https://sellbackend.creditclan.com/parent/index.php/rent/approve_agent",
+            {
+              agent_id: request_id,
+              step: "",
+              is_approve: 1,
+            }
+          );
+        }
+        const val = await axios.get(
+          `https://sellbackend.creditclan.com/parent/index.php/rent/get_agents/${request_id}`
+        );
         return res.json({
-          response: updatedOne.data?.request,
+          response: val?.data?.data,
           message: "updated",
         });
       } catch (error) {
@@ -41,58 +57,49 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      Number(data.request?.is_approved) !== 1
+      Number(data?.data[0]?.is_approved) !== 1
     ) {
       try {
-        await ApprovalWorkFlowRent.create({
-          user_id,
-          action,
+        await ApprovalWorkFlowAgent.create({
+          user_id: user_id,
+          action: action,
           request_id,
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
         await axios.post(
-          "https://wema.creditclan.com/api/v3/rent/update_request_step",
+          "https://sellbackend.creditclan.com/parent/index.php/rent/approve_agent",
           {
-            rent_id: request_id,
+            agent_id: request_id,
             step: ch[ch.length - 1].pre_step + 1,
+            is_approve: "",
           }
         );
-        // await Teacher.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
-        const checkEnd = await ApprovalWorkFlowRent.findAll({
+        const checkEnd = await ApprovalWorkFlowAgent.findAll({
           where: { request_id },
         });
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
           await axios.post(
-            "https://wema.creditclan.com/api/v3/rent/final_approve_rent",
-            { user_id, request_id }
+            "https://sellbackend.creditclan.com/parent/index.php/rent/approve_agent",
+            {
+              agent_id: request_id,
+              step: "",
+              is_approve: 1,
+            }
           );
-          // await Teacher.update(
-          //   { is_approved: 1 },
-          //   { where: { id: request_id } }
-          // );
         }
-
-        const values = await axios.post(
-          "https://wema.creditclan.com/api/v3/rent/rentrequest",
-          { rent_id: request_id }
+        const checkAgent2 = await axios.get(
+          `https://sellbackend.creditclan.com/parent/index.php/rent/get_agents/${request_id}`
         );
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
-
         return res.json({
-          response: values.data.request,
+          response: checkAgent2?.data?.data,
           message: "updated",
         });
       } catch (error) {
         return res.json({ error });
       }
     } else {
-      return res.json({ message: "nothing to update" });
+      return res.json({ message: "nothing to approve!" });
     }
   } catch (error) {
     console.log(error);
@@ -102,11 +109,38 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
 
 exports.getEachRequestFlow = async (req, res) => {
   try {
-    let results = await ApprovalWorkFlowRent.findAll({
+    let results = await ApprovalWorkFlowAgent.findAll({
       where: { request_id: req.body.request_id },
     });
     return res.json(results);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.getEachRequestFlow = async (req, res) => {
+  try {
+    let results = await ApprovalWorkFlowAgent.findAll({
+      where: { request_id: req.body.request_id },
+    });
+    return res.json(results);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
+exports.InsertFlow = async (req, res) => {
+  try {
+    const { action, fulfillment, owner, priority, category } = req.body;
+    const result = await ApproveFlow.create({
+      action,
+      fulfillment,
+      owner,
+      priority,
+      category,
+    });
+    return res.json(result);
+  } catch (error) {
+    console.log(error);
   }
 };
