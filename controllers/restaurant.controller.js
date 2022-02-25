@@ -427,3 +427,20 @@ exports.CrawlingRecordMonitor = async (req, res) => {
     console.log(error);
   }
 };
+
+exports.InsertFlow = async (req, res) => {
+  try {
+    const { action, fulfillment, owner, priority, category, category } =
+      req.body;
+    const result = await ApproveFlow.create({
+      action,
+      fulfillment,
+      owner,
+      priority,
+      category,
+    });
+    return res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
