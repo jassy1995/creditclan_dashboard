@@ -13,7 +13,7 @@ exports.preApprovalWorkFlowAgent = async (req, res) => {
     if (
       ch.length == 0 &&
       checker.length !== 0 &&
-      Number(data?.data[0]?.is_approved) !== 1
+      Number(data?.data?.is_approved) !== 1
     ) {
       try {
         await ApprovalWorkFlowAgent.create({
@@ -57,7 +57,7 @@ exports.preApprovalWorkFlowAgent = async (req, res) => {
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      Number(data?.data[0]?.is_approved) !== 1
+      Number(data?.data?.is_approved) !== 1
     ) {
       try {
         await ApprovalWorkFlowAgent.create({
@@ -103,17 +103,6 @@ exports.preApprovalWorkFlowAgent = async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error, message: "error occur" });
-  }
-};
-
-exports.getEachRequestFlow = async (req, res) => {
-  try {
-    let results = await ApprovalWorkFlowAgent.findAll({
-      where: { request_id: req.body.request_id },
-    });
-    return res.json(results);
-  } catch (error) {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
