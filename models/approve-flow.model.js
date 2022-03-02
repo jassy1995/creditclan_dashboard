@@ -8,14 +8,13 @@ const ApproveFlow = (sequelize, DataTypes, Sequelize) =>
         allowNull: false,
         autoIncrement: true,
       },
-
+      description: {
+        type: DataTypes.STRING,
+      },
       action: {
         type: DataTypes.STRING,
       },
       owner: {
-        type: DataTypes.STRING,
-      },
-      fulfillment: {
         type: DataTypes.STRING,
       },
       priority: {
