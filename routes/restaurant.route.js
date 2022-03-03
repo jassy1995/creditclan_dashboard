@@ -18,5 +18,6 @@ router.post("/api/get-flow", Controller.getAllFlowRestaurantFlow);
 router.post("/api/get-current-request", Controller.getInitialValue);
 router.get("/api/fetch-summary", Controller.getSummaryOfRequestStage);
 router.post("/api/save-scrawling-record", Controller.CrawlingRecordMonitor);
+router.post("/api/get-restaurant-per-step", Controller.SearchByStep);
 
 module.exports = router;

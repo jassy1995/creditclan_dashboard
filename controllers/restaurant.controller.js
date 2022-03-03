@@ -414,8 +414,21 @@ exports.getSummaryOfRequestStage = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
-// CrawlingRecord;
 
+exports.SearchByStep = async (req, res) => {
+  try {
+    const result = await Restaurant.findAll({
+      where: { step: req.body.stage },
+      offset: req.body.start,
+      limit: 20,
+    });
+    return res.json(result);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// CrawlingRecord;
 exports.CrawlingRecordMonitor = async (req, res) => {
   try {
     const result = await CrawlingRecord.create({
