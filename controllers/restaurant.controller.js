@@ -428,6 +428,21 @@ exports.SearchByStep = async (req, res) => {
   }
 };
 
+exports.updateRestaurantRecord = async (req, res) => {
+  try {
+    let { id, ...others } = req.body;
+    await Restaurant.update(others, {
+      where: { id },
+    });
+    let response = await Restaurant.findOne({
+      where: { id },
+    });
+    return res.json(response);
+  } catch (error) {
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 // CrawlingRecord;
 exports.CrawlingRecordMonitor = async (req, res) => {
   try {
