@@ -45,6 +45,9 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     step: {
       type: DataTypes.INTEGER,
     },
+    agreement_signed: {
+      type: DataTypes.INTEGER,
+    },
     created_at: {
       type: DataTypes.DATE,
     },
