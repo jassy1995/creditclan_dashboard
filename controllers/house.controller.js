@@ -69,6 +69,8 @@ exports.approveHouse = async (req, res) => {
             list_id: request_id,
             step: 1,
             is_approve: "",
+            market: "",
+            occupied: "",
           }
         );
 
@@ -102,6 +104,8 @@ exports.approveHouse = async (req, res) => {
             list_id: request_id,
             step: ch[ch.length - 1].pre_step + 1,
             is_approve: "",
+            market: "",
+            occupied: "",
           }
         );
         const checkEnd = await ApprovalWorkFlowHouse.findAll({
@@ -118,6 +122,8 @@ exports.approveHouse = async (req, res) => {
               list_id: request_id,
               step: "",
               is_approve: 1,
+              market: 1,
+              occupied: "",
             }
           );
         }

@@ -121,6 +121,12 @@ const ListHouse = (sequelize, DataTypes, Sequelize) =>
       date_modified: {
         type: DataTypes.TEXT,
       },
+      occupied: {
+        type: DataTypes.INTEGER,
+      },
+      market: {
+        type: DataTypes.INTEGER,
+      },
     },
     { timestamps: false }
   );
