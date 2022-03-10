@@ -50,7 +50,6 @@ exports.getAllRestaurants = async (req, res) => {
       order: [["created_at", "DESC"]],
       limit: 20,
       offset: req.body.start,
-      include: [model1, model2],
     });
 
     return res.json(results);
