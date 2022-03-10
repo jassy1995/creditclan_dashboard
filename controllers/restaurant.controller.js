@@ -33,20 +33,27 @@ exports.saveWorkFlow = async (req, res) => {
 
 exports.getAllRestaurants = async (req, res) => {
   try {
-    let results = await Restaurant.findAll({
-      offset: req.body.start,
+    // let results = await Restaurant.findAll({
+    //   offset: req.body.start,
+    //   limit: 20,
+    // });
+
+    // const sorted = results.sort((a, b) =>
+    //   new Date(a.created_at) > new Date(b.created_at)
+    //     ? -1
+    //     : new Date(a.created_at) < new Date(b.created_at)
+    //     ? 1
+    //     : 0
+    // );
+
+    const results = await Restaurant.findAll({
+      order: [["created_at", "DESC"]],
       limit: 20,
+      offset: req.body.start,
+      include: [model1, model2],
     });
 
-    const sorted = results.sort((a, b) =>
-      new Date(a.created_at) > new Date(b.created_at)
-        ? -1
-        : new Date(a.created_at) < new Date(b.created_at)
-        ? 1
-        : 0
-    );
-
-    return res.json(sorted);
+    return res.json(results);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error, message: "error occur" });
