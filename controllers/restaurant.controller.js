@@ -5,6 +5,7 @@ const {
   ApprovalWorkFlow,
   ApproveFlow,
   CrawlingRecord,
+  Agent,
   Sequelize,
 } = require("../models");
 const axios = require("axios");
@@ -48,6 +49,12 @@ exports.getAllRestaurants = async (req, res) => {
 
     const results = await Restaurant.findAll({
       where: { is_declined: 0 },
+      includes: [
+        {
+          model: Agent,
+          required: false,
+        },
+      ],
       order: [["created_at", "DESC"]],
       limit: 20,
       offset: req.body.start,
