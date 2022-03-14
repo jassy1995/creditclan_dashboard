@@ -23,7 +23,7 @@ Restaurant.belongsTo(Agent, {
   foreignKey: "agent_id",
   targetKey: "id",
 });
-sequelize.sync().then(() => {
+sequelize.sync({ alter: true }).then(() => {
   console.log("Drop and re-sync db.");
 });
 
