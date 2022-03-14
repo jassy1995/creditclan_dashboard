@@ -47,7 +47,7 @@ const Agent = (sequelize, DataTypes, Sequelize) =>
       type: DataTypes.DOUBLE,
     },
     suburb: {
-      TYPE: DataTypes.TEXT,
+      type: DataTypes.TEXT,
     },
     nearest_bus_stop: {
       type: DataTypes.TEXT,
