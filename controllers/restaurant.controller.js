@@ -264,7 +264,10 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
 
 exports.rejectRequest = async (req, res) => {
   const { user_id, request_id } = req.body;
-  await Restaurant.update({ is_declined: 1 }, { where: { id: request_id } });
+  await Restaurant.update(
+    { is_approved: -1, is_declined: 1 },
+    { where: { id: request_id } }
+  );
   await ApprovalWorkFlow.create({
     user_id,
     action: "reject request",
