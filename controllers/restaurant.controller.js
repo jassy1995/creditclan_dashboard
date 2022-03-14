@@ -49,7 +49,7 @@ exports.getAllRestaurants = async (req, res) => {
 
     const results = await Restaurant.findAll({
       where: { is_declined: 0 },
-      includes: [
+      include: [
         {
           model: Agent,
           required: false,
