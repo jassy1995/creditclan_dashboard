@@ -12,8 +12,17 @@ const teacherRoute = require("./routes/teacher.route");
 const agentRoute = require("./routes/agent.route");
 
 // require("dotenv").config();
-Agent.hasMany(Restaurant);
-Restaurant.belongsTo(Agent);
+// WorkoutExercises.hasMany(Day, { foreignKey: "workout_id" });
+// Day.belongsTo(WorkoutExercises, {
+//   foreignKey: "workout_id",
+//   targetKey: "workout_id",
+// });
+
+Agent.hasMany(Restaurant, { foreignKey: "agent_id" });
+Restaurant.belongsTo(Agent, {
+  foreignKey: "agent_id",
+  targetKey: "id",
+});
 sequelize.sync().then(() => {
   console.log("Drop and re-sync db.");
 });
