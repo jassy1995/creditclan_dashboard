@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-const { sequelize } = require("./models");
+const { Agent, Restaurant, sequelize } = require("./models");
 
 const restaurantRoutes = require("./routes/restaurant.route");
 const houseRoutes = require("./routes/house.route");
@@ -12,6 +12,8 @@ const teacherRoute = require("./routes/teacher.route");
 const agentRoute = require("./routes/agent.route");
 
 // require("dotenv").config();
+Agent.hasMany(Restaurant);
+Restaurant.belongsTo(Agent);
 sequelize.sync().then(() => {
   console.log("Drop and re-sync db.");
 });

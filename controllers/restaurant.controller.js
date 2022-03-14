@@ -47,6 +47,7 @@ exports.getAllRestaurants = async (req, res) => {
     // );
 
     const results = await Restaurant.findAll({
+      where: { is_declined: 0 },
       order: [["created_at", "DESC"]],
       limit: 20,
       offset: req.body.start,

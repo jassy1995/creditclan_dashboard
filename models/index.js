@@ -119,7 +119,9 @@ const CommentAgent = require("./comment-agent.model")(
   DataTypes,
   Sequelize
 );
+const Agent = require("./agent.model")(sequelize, DataTypes, Sequelize);
 module.exports = {
+  Agent,
   CommentAgent,
   ApprovalWorkFlowAgent,
   ApprovalWorkFlowRent,
