@@ -48,6 +48,9 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     agreement_signed: {
       type: DataTypes.INTEGER,
     },
+    is_rejected: {
+      type: DataTypes.INTEGER,
+    },
     has_discount: {
       type: DataTypes.INTEGER,
     },

@@ -184,7 +184,7 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
   try {
     const checker = await ApproveFlow.findAll({ where: { category } });
     const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
-    const checkTeacher = await Restaurant.findOne({
+    const checkRestaurant = await Restaurant.findOne({
       where: { id: request_id },
     });
 
@@ -209,7 +209,7 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
       }
     } else if (
       ch[ch.length - 1].pre_step < checker.length &&
-      checkTeacher?.is_approved !== 1
+      checkRestaurant?.is_approved !== 1
     ) {
       try {
         await ApprovalWorkFlow.create({
@@ -252,6 +252,22 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
     console.log(error);
     return res.status(500).json({ error, message: "error occur" });
   }
+};
+
+exports.rejectRequest = async (req, res) => {
+  const { user_id, request_id } = req.body;
+  await Restaurant.update({ is_rejected: 1 }, { where: { id: request_id } });
+  await ApprovalWorkFlow.create({
+    user_id,
+    action: "reject request",
+    request_id,
+    pre_step: 0,
+    date: Date.now(),
+  });
+  const rejectedRequest = await Restaurant.findOne({
+    where: { id: request_id },
+  });
+  return res.json({ request: rejectedRequest, message: "rejected" });
 };
 
 exports.getAllFlowRestaurantFlow = async (req, res) => {
