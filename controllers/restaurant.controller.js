@@ -452,6 +452,12 @@ exports.SearchByStep = async (req, res) => {
   try {
     const result = await Restaurant.findAll({
       where: { step: req.body.stage },
+      include: [
+        {
+          model: Agent,
+          required: false,
+        },
+      ],
       offset: req.body.start,
       limit: 20,
     });
