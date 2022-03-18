@@ -47,6 +47,8 @@ exports.getAllRestaurants = async (req, res) => {
     //     : 0
     // );
 
+    // Post.findAll({ limit: 10, order: [["updatedAt", "DESC"]] });
+
     const results = await Restaurant.findAll({
       where: { is_declined: 0 },
       include: [
@@ -55,9 +57,9 @@ exports.getAllRestaurants = async (req, res) => {
           required: false,
         },
       ],
-      order: [["created_at", "DESC"]],
-      limit: 20,
       offset: req.body.start,
+      limit: 20,
+      order: [["created_at", "DESC"]],
     });
 
     return res.json(results);
@@ -138,8 +140,9 @@ exports.commentRestaurantMethod = async (req, res) => {
       restaurant_id,
       date: Date.now(),
     });
-    if (result.comment) return res.json("sent");
-    else return res.json("sending failed");
+    if (result.comment) {
+      return res.json({ message: "sent", data: result });
+    } else return res.json({ message: "sending failed", data: null });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error, message: "error occur" });

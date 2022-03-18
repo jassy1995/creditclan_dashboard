@@ -14,8 +14,9 @@ exports.rentRequestComment = async (req, res) => {
       request_id,
       date: Date.now(),
     });
-    if (result.comment) return res.json("sent");
-    else return res.json("sending failed");
+    if (result.comment) {
+      return res.json({ message: "sent", data: result });
+    } else return res.json({ message: "sending failed", data: null });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error, message: "error occur" });
