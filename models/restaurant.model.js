@@ -24,6 +24,9 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     meal_amounts: {
       type: DataTypes.TEXT,
     },
+    total_meals_today: {
+      type: DataTypes.INTEGER,
+    },
     waiters: {
       type: DataTypes.TEXT,
     },

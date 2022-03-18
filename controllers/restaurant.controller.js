@@ -50,13 +50,13 @@ exports.getAllRestaurants = async (req, res) => {
     // Post.findAll({ limit: 10, order: [["updatedAt", "DESC"]] });
 
     const results = await Restaurant.findAll({
-      where: { is_declined: 0 },
       include: [
         {
           model: Agent,
           required: false,
         },
       ],
+      where: { is_declined: 0 },
       offset: req.body.start,
       limit: 20,
       order: [["created_at", "DESC"]],
