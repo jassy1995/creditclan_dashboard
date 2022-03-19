@@ -57,6 +57,9 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     has_discount: {
       type: DataTypes.INTEGER,
     },
+    code: {
+      type: DataTypes.TEXT,
+    },
     agent_id: {
       type: DataTypes.INTEGER,
     },
