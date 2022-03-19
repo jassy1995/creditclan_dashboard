@@ -25,13 +25,6 @@ exports.schoolLoanComment = async (req, res) => {
 
 exports.getAllSchoolComment = async (req, res) => {
   try {
-    // let results = await CommentSchoolLoan.findAll(
-    //   {
-    //     offset: req.body.start,
-    //     limit: 10,
-    //   },
-    //   { where: { request_id: req.body.request_id } }
-    // );
     let results = await CommentSchoolLoan.findAll({
       offset: req.body.start,
       limit: 10,
@@ -71,10 +64,6 @@ exports.preApprovalWorkFlowSchool = async (req, res) => {
             status: "",
           }
         );
-        // await Restaurant.update({ step: 1 }, { where: { id: request_id } });
-        // let request2 = await Restaurant.findOne({
-        //   where: { id: request_id },
-        // });
 
         return res.json({
           response: updatedOne.data.request,
@@ -117,18 +106,8 @@ exports.preApprovalWorkFlowSchool = async (req, res) => {
               status: 1,
             }
           );
-          // await Teacher.update(
-          //   { is_approved: 1 },
-          //   { where: { id: request_id } }
-          // );
         }
-        // await Restaurant.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
-        // let request2 = await Restaurant.findOne({
-        //   where: { id: request_id },
-        // });
+
         const checkSchool2 = await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/parents/request_school",
           { request_id }

@@ -46,9 +46,6 @@ exports.approveHouse = async (req, res) => {
     const ch = await ApprovalWorkFlowHouse.findAll({
       where: { request_id },
     });
-    // const checkHouse = await ListHouse.findOne({
-    //   where: { id: request_id },
-    // });
 
     const checkHouse = await axios.get(
       `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
@@ -92,10 +89,6 @@ exports.approveHouse = async (req, res) => {
           pre_step: ch[ch.length - 1].pre_step + 1,
           date: Date.now(),
         });
-        // await ListHouse.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
         await axios.post(
           "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
           {
@@ -108,10 +101,6 @@ exports.approveHouse = async (req, res) => {
           where: { request_id },
         });
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
-          // await ListHouse.update(
-          //   { is_approved: 1 },
-          //   { where: { id: request_id } }
-          // );
           await axios.post(
             "https://sellbackend.creditclan.com/parent/index.php/rent/approve_rent",
             {
@@ -121,10 +110,6 @@ exports.approveHouse = async (req, res) => {
             }
           );
         }
-
-        // let request2 = await ListHouse.findOne({
-        //   where: { id: request_id },
-        // });
 
         const checkHouse2 = await axios.get(
           `https://sellbackend.creditclan.com/parent/index.php/rent/get_list/${request_id}`
@@ -182,13 +167,6 @@ exports.updateHouseRecord = async (req, res) => {
 
 exports.getAllHouseComment = async (req, res) => {
   try {
-    // let results = await CommentHouse.findAll(
-    //   {
-    //     offset: req.body.start,
-    //     limit: 10,
-    //   },
-    //   { where: { house_id: req.body.request_id } }
-    // );
     let results = await CommentHouse.findAll({
       offset: req.body.start,
       limit: 10,
@@ -211,39 +189,3 @@ exports.getEachRequestFlow = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
-
-// exports.getSummaryOfRequestStageHouse = async (req, res) => {
-//   try {
-//     let val = await ListHouse.findAll({
-//       group: ["step"],
-//       attributes: [
-//         ["step", "stage"],
-//         [Sequelize.fn("COUNT", "step"), "count"],
-//       ],
-//       order: [[Sequelize.literal("count"), "DESC"]],
-//       raw: true,
-//     });
-
-//     let flow = await ApproveFlow.findAll({
-//       where: { category: "house" },
-//     });
-
-//     for (let i = 1; i < flow.length; i++) {
-//       let verify = val.find((element) => {
-//         return element.stage == i;
-//       });
-
-//       if (!verify) {
-//         val.push({
-//           stage: i,
-//           count: 0,
-//         });
-//       }
-//     }
-
-//     return res.json(val);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ error, message: "error occur" });
-//   }
-// };

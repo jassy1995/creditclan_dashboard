@@ -34,21 +34,6 @@ exports.saveWorkFlow = async (req, res) => {
 
 exports.getAllRestaurants = async (req, res) => {
   try {
-    // let results = await Restaurant.findAll({
-    //   offset: req.body.start,
-    //   limit: 20,
-    // });
-
-    // const sorted = results.sort((a, b) =>
-    //   new Date(a.created_at) > new Date(b.created_at)
-    //     ? -1
-    //     : new Date(a.created_at) < new Date(b.created_at)
-    //     ? 1
-    //     : 0
-    // );
-
-    // Post.findAll({ limit: 10, order: [["updatedAt", "DESC"]] });
-    // order: sequelize.literal("timestamp DESC");
     const results = await Restaurant.findAll({
       order: [["created_at", "DESC"]],
       where: { is_declined: 0 },
@@ -90,56 +75,6 @@ exports.getSearchRestaurants = async (req, res) => {
   }
 };
 
-// exports.approveRestaurants = async (req, res) => {
-//   const { user_id, restaurant_id } = req.body;
-//   try {
-//     let checkUser = await ApproveRestaurant.findOne({
-//       where: { restaurant_id },
-//     });
-//     if (checkUser === null)
-//       await ApproveRestaurant.create({
-//         bm_id: null,
-//         manager_id: null,
-//         restaurant_id,
-//         date: null,
-//         is_approved: "-1",
-//       });
-//     const ch = await ApproveRestaurant.findOne({ where: { restaurant_id } });
-//     if (ch.is_approved === "-1") {
-//       await ApproveRestaurant.update(
-//         { bm_id: user_id, is_approved: "0", date: Date.now() },
-//         { where: { restaurant_id } }
-//       );
-//       await Restaurant.update(
-//         { is_approved: "0" },
-//         { where: { id: restaurant_id } }
-//       );
-//       let restaurant = await Restaurant.findOne({
-//         where: { id: restaurant_id },
-//       });
-//       return res.json({ result: "0", restaurant });
-//     } else if (ch.is_approved === "0") {
-//       await ApproveRestaurant.update(
-//         { is_approved: "1", manager_id: user_id },
-//         { where: { restaurant_id } }
-//       );
-//       await Restaurant.update(
-//         { is_approved: "1" },
-//         { where: { id: restaurant_id } }
-//       );
-//       let restaurant = await Restaurant.findOne({
-//         where: { id: restaurant_id },
-//       });
-//       return res.json({ result: "1", restaurant });
-//     } else if (ch?.is_approved == "1") {
-//       return res.json({ result: "done", restaurant_id });
-//     }
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ error, message: "error occur" });
-//   }
-// };
-
 exports.commentRestaurantMethod = async (req, res) => {
   const { comment, user_id, restaurant_id } = req.body;
   try {
@@ -172,18 +107,9 @@ exports.updateRestaurantRecord = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
-// Users.findAll({ order: [['updatedAt', 'DESC']]}); // or ASC
 
 exports.getAllRestaurantComment = async (req, res) => {
   try {
-    //   let results = await CommentRestaurant.findAll(
-    //     {
-    //       offset: req.body.start,
-    //       limit: 10,
-    //     },
-    //     { where: { restaurant_id: req.body.request_id } }
-    //   );
-    //   return res.json(results);
     try {
       let results = await CommentRestaurant.findAll({
         offset: req.body.start,
@@ -318,51 +244,6 @@ exports.getInitialValue = async (req, res) => {
 
 exports.getSummaryOfRequestStage = async (req, res) => {
   try {
-    // let all_restaurant = await Restaurant.findAll({
-    //   where: { id: request.id },
-    // });
-    // let call_applicant = await ApprovalWorkFlow.findAll({
-    //   where: { action: "call the applicant" },
-    // });
-    // let visit_restaurant = await ApprovalWorkFlow.findAll({
-    //   where: { action: "visit the restaurant" },
-    // });
-    // let meet_restaurant_owner = await ApprovalWorkFlow.findAll({
-    //   where: { action: "meet with restaurant owner" },
-    // });
-    // let sign_agreement = await ApprovalWorkFlow.findAll({
-    //   where: { action: "sign agreement" },
-    // });
-    // let sign_agreement = await ApprovalWorkFlow.findAll({
-    //   where: { action: "approve disbursement" },
-    // });
-    // let val = await ApprovalWorkFlow.findAll({
-    //   attributes: [
-    //     "ApprovalWorkFlow.action",
-    //     [
-    //       sequelize.fn("COUNT", sequelize.col("ApprovalWorkFlow.id")),
-    //       "CountPerRequest",
-    //     ],
-    //   ],
-    //   include: [
-    //     {
-    //       model: ApprovalWorkFlow,
-    //       attributes: [],
-    //       include: [],
-    //     },
-    //   ],
-    //   group: ["ApprovalWorkFlow.pre_step"],
-    //   raw: true,
-    // });
-
-    // let val = await ApprovalWorkFlow.findAll({
-    //   attributes: {
-    //     include: [
-    //       [sequelize.fn("COUNT", sequelize.col("pre_step")), "totalPrice"],
-    //     ],
-    //   },
-    // });
-
     let val = await Restaurant.findAll({
       group: ["step"],
       attributes: [
@@ -390,71 +271,6 @@ exports.getSummaryOfRequestStage = async (req, res) => {
       }
     }
 
-    // let array = [];
-    // let allResults;
-
-    // await axios
-    //   .post("https://whatsapp.creditclan.com/rent/api/restaurant-detail", {
-    //     start: 0,
-    //   })
-    //   .then((response) => {
-    //     // console.log(response.data);
-    //     allResults = response.data;
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
-    // console.log(allResults);
-
-    // for (let index = 0; index < allResults.length; index++) {
-    //   let arr = await ApprovalWorkFlow.findAll({
-    //     where: { request_id: allResults[index].id },
-    //   });
-
-    //   if (arr.length > 0) {
-    //     array.push(arr[arr.length - 1]);
-    //   } else {
-    //     array.push({ step: 0, action: "New request" });
-    //   }
-    // }
-
-    // let groups = array.reduce((groups, param) => {
-    //   const data = param.action;
-    //   if (!groups[data]) {
-    //     groups[data] = [];
-    //   }
-    //   groups[data].push(param);
-    //   return groups;
-    // }, {});
-    // const groupArrays = Object.keys(groups).map((data) => {
-    //   return {
-    //     action: data,
-    //     count: groups[data].length,
-    //   };
-    // });
-
-    // let flows = await ApproveFlow.findAll({
-    //   where: { category: "restaurant" },
-    // });
-
-    // for (let i = 0; i < flows.length; i++) {
-    //   let verify = groupArrays.find((element) => {
-    //     return element.action == flows[i].action;
-    //   });
-    //   if (!verify) {
-    //     groupArrays.push({
-    //       count: 0,
-    //       action: flows[i].action,
-    //     });
-    //   }
-    // }
-
-    // let val = await ApprovalWorkFlow.findAll({
-    //   where: {
-    //     category: req.body.category,
-    //   },
-    // });
-    // groupArrays;
     return res.json(val);
   } catch (error) {
     return res.status(500).json({ error, message: "error occur" });

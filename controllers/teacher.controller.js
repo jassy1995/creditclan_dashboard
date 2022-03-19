@@ -3,7 +3,6 @@ const {
   CommentTeacherLoan,
   ApprovalWorkFlowTeacher,
   ApproveFlow,
-  // Sequelize,
   Teacher,
 } = require("../models");
 exports.teacherLoanComment = async (req, res) => {
@@ -26,13 +25,6 @@ exports.teacherLoanComment = async (req, res) => {
 
 exports.getTeacherComment = async (req, res) => {
   try {
-    // let results = await CommentTeacherLoan.findAll(
-    //   {
-    //     offset: req.body.start,
-    //     limit: 10,
-    //   },
-    //   { where: { request_id: req.body.request_id } }
-    // );
     let results = await CommentTeacherLoan.findAll({
       offset: req.body.start,
       limit: 10,
@@ -167,39 +159,3 @@ exports.getEachRequestFlow = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
-
-// exports.getSummaryOfRequestStageTeacher = async (req, res) => {
-//   try {
-//     let val = await Teacher.findAll({
-//       group: ["step"],
-//       attributes: [
-//         ["step", "stage"],
-//         [Sequelize.fn("COUNT", "step"), "count"],
-//       ],
-//       order: [[Sequelize.literal("count"), "DESC"]],
-//       raw: true,
-//     });
-
-//     let flow = await ApproveFlow.findAll({
-//       where: { category: "teacher" },
-//     });
-
-//     for (let i = 1; i < flow.length; i++) {
-//       let verify = val.find((element) => {
-//         return element.stage == i;
-//       });
-
-//       if (!verify) {
-//         val.push({
-//           stage: i,
-//           count: 0,
-//         });
-//       }
-//     }
-
-//     return res.json(val);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json({ error, message: "error occur" });
-//   }
-// };

@@ -56,7 +56,6 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
           pre_step: 1,
           date: Date.now(),
         });
-        // await Teacher.update({ step: 1 }, { where: { id: request_id } });
         const updatedOne = await axios.post(
           "https://wema.creditclan.com/api/v3/rent/update_request_step",
           {
@@ -64,9 +63,6 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
             step: 1,
           }
         );
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
 
         return res.json({
           response: updatedOne.data?.request,
@@ -94,10 +90,6 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
             step: ch[ch.length - 1].pre_step + 1,
           }
         );
-        // await Teacher.update(
-        //   { step: ch[ch.length - 1].pre_step + 1 },
-        //   { where: { id: request_id } }
-        // );
         const checkEnd = await ApprovalWorkFlowRent.findAll({
           where: { request_id },
         });
@@ -106,20 +98,12 @@ exports.preApprovalWorkFlowRent = async (req, res) => {
             "https://wema.creditclan.com/api/v3/rent/final_approve_rent",
             { user_id, request_id }
           );
-          // await Teacher.update(
-          //   { is_approved: 1 },
-          //   { where: { id: request_id } }
-          // );
         }
 
         const values = await axios.post(
           "https://wema.creditclan.com/api/v3/rent/rentrequest",
           { rent_id: request_id }
         );
-        // let request2 = await Teacher.findOne({
-        //   where: { id: request_id },
-        // });
-
         return res.json({
           response: values.data.request,
           message: "updated",
