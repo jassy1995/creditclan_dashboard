@@ -50,10 +50,10 @@ exports.getAllRestaurants = async (req, res) => {
     // Post.findAll({ limit: 10, order: [["updatedAt", "DESC"]] });
     // order: sequelize.literal("timestamp DESC");
     const results = await Restaurant.findAll({
+      order: [["created_at", "DESC"]],
       where: { is_declined: 0 },
       offset: req.body.start,
       limit: 20,
-      order: [["created_at", "DESC"]],
       // order: Sequelize.literal("created_at DESC"),
       include: [
         {
@@ -164,6 +164,7 @@ exports.updateRestaurantRecord = async (req, res) => {
     return res.status(500).json({ error, message: "error occur" });
   }
 };
+// Users.findAll({ order: [['updatedAt', 'DESC']]}); // or ASC
 
 exports.getAllRestaurantComment = async (req, res) => {
   try {
