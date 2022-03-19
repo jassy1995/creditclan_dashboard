@@ -48,7 +48,7 @@ exports.getAllRestaurants = async (req, res) => {
     // );
 
     // Post.findAll({ limit: 10, order: [["updatedAt", "DESC"]] });
-
+    // order: sequelize.literal("timestamp DESC");
     const results = await Restaurant.findAll({
       include: [
         {
@@ -59,7 +59,8 @@ exports.getAllRestaurants = async (req, res) => {
       where: { is_declined: 0 },
       offset: req.body.start,
       limit: 20,
-      order: [["created_at", "DESC"]],
+      // order: [["created_at", "DESC"]],
+      order: Sequelize.literal("created_at DESC"),
     });
 
     return res.json(results);
