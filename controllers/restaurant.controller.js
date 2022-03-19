@@ -178,14 +178,17 @@ exports.preApprovalWorkFlowRestaurant = async (req, res) => {
         if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
           let compareNum = false;
           let generatedCode = Math.floor(1000 + Math.random() * 9000);
-          if (checkRestaurant.code !== generatedCode) {
+          if (checkRestaurant.code === null) {
             compareNum = true;
+            // generatedCode = Math.floor(1000 + Math.random() * 9000);
+            // compareNum = true;
           }
           await Restaurant.update(
             {
               is_approved: 1,
-              ...(compareNum && { code: "R" + generatedCode }),
+              code: compareNum ? "R" + generatedCode : "",
             },
+
             { where: { id: request_id } }
           );
         }
