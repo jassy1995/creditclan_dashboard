@@ -54,7 +54,6 @@ exports.getAllRestaurants = async (req, res) => {
       where: { is_declined: 0 },
       offset: req.body.start,
       limit: 20,
-      // order: Sequelize.literal("created_at DESC"),
       include: [
         {
           model: Agent,
@@ -73,7 +72,16 @@ exports.getAllRestaurants = async (req, res) => {
 exports.getSearchRestaurants = async (req, res) => {
   try {
     let results = await Restaurant.findAll({
-      where: { restaurant_name: { [Op.like]: `%${req.body.searchItem}%` } },
+      where: {
+        restaurant_name: { [Op.like]: `%${req.body.searchItem}%` },
+        is_declined: 0,
+      },
+      include: [
+        {
+          model: Agent,
+          required: false,
+        },
+      ],
     });
     return res.json(results);
   } catch (error) {
