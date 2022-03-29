@@ -5,7 +5,7 @@ const prod = NODE_ENV === "production";
 const dbConfig = {
   HOST: "localhost",
   USER: "root",
-  PASSWORD: "babatunde85",
+  PASSWORD: "",
   DB: "merchantclan",
   dialect: "mysql",
 

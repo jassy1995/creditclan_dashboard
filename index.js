@@ -10,6 +10,8 @@ const crawledPropertyRoute = require("./routes/crawled-property.route");
 const schoolRoute = require("./routes/school.route");
 const teacherRoute = require("./routes/teacher.route");
 const agentRoute = require("./routes/agent.route");
+const pharmacyRoute = require("./routes/pharmacy.route");
+
 
 Agent.hasMany(Restaurant, { foreignKey: "agent_id" });
 Restaurant.belongsTo(Agent, {
@@ -31,6 +33,7 @@ app.use(crawledPropertyRoute);
 app.use(schoolRoute);
 app.use(teacherRoute);
 app.use(agentRoute);
+app.use(pharmacyRoute);
 
 const PORT = process.env.PORT || 2022;
 app.listen(PORT, () => {
