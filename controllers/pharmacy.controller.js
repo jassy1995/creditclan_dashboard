@@ -307,6 +307,25 @@ const {
       console.log(error);
     }
   };
+
+  exports.getAllPharmacyComment = async (req, res) => {
+    try {
+      try {
+        let results = await CommentPharmacy.findAll({
+          offset: req.body.start,
+          limit: 10,
+  
+          where: { pharmacy_id: req.body.request_id },
+        });
+        return res.json(results);
+      } catch (error) {
+        return res.status(500).json({ error, message: "error occur" });
+      }
+    } catch (error) {
+      return res.status(500).json({ error, message: "error occur" });
+    }
+  };
+
   
 //   exports.updateRestaurantRecord = async (req, res) => {
 //     try {
