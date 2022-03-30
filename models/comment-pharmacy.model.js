@@ -9,7 +9,7 @@ const CommentPharmacy = (sequelize, DataTypes, Sequelize) =>
     user_id: {
       type: DataTypes.TEXT,
     },
-    restaurant_id: {
+    pharmacy_id: {
       type: DataTypes.INTEGER,
     },
     comment: {
