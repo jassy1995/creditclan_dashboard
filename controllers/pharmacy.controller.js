@@ -4,6 +4,7 @@ const {
     ApproveRestaurant,
     CommentPharmacy,
     ApprovalWorkFlow,
+    ApprovalWorkFlowPharmacy,
     ApproveFlow,
     CrawlingRecord,
     Agent,
@@ -131,14 +132,14 @@ const {
     const { user_id, request_id, action, category } = req.body;
     try {
       const checker = await ApproveFlow.findAll({ where: { category } });
-      const ch = await ApprovalWorkFlow.findAll({ where: { request_id } });
+      const ch = await ApprovalWorkFlowPharmacy.findAll({ where: { request_id } });
       const checkPharmacy = await Pharmacy.findOne({
         where: { id: request_id },
       });
   
       if (ch.length == 0 && checker.length !== 0) {
         try {
-          await ApprovalWorkFlow.create({
+          await ApprovalWorkFlowPharmacy.create({
             user_id: user_id,
             action: action,
             request_id,
@@ -160,7 +161,7 @@ const {
         checkPharmacy?.is_approved !== 1
       ) {
         try {
-          await ApprovalWorkFlow.create({
+          await ApprovalWorkFlowPharmacy.create({
             user_id: user_id,
             action: action,
             request_id,
@@ -173,7 +174,7 @@ const {
             { where: { id: request_id } }
           );
   
-          const checkEnd = await ApprovalWorkFlow.findAll({
+          const checkEnd = await ApprovalWorkFlowPharmacy.findAll({
             where: { request_id },
           });
           if (checkEnd[checkEnd.length - 1].pre_step === checker.length) {
@@ -219,7 +220,7 @@ const {
       { is_approved: -1, is_declined: 1 },
       { where: { id: request_id } }
     );
-    await ApprovalWorkFlow.create({
+    await ApprovalWorkFlowPharmacy.create({
       user_id,
       action: "reject request",
       request_id,
@@ -245,7 +246,7 @@ const {
   
   exports.getInitialValue = async (req, res) => {
     try {
-      let results = await ApprovalWorkFlow.findAll({
+      let results = await ApprovalWorkFlowPharmacy.findAll({
         where: { request_id: req.body.request_id },
       });
       return res.json(results);

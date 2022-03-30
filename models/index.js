@@ -86,6 +86,12 @@ const ApprovalWorkFlow = require("./approval-work-flow.model")(
   Sequelize
 );
 
+const ApprovalWorkFlowPharmacy = require("./approval-work-flow-pharmacy.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
 const ApproveFlow = require("./approve-flow.model")(
   sequelize,
   DataTypes,
@@ -156,5 +162,6 @@ module.exports = {
   ApproveFlow,
   sequelize,
   Pharmacy,
+  ApprovalWorkFlowPharmacy,
   Sequelize,
 };
