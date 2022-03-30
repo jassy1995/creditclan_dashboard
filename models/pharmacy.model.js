@@ -33,7 +33,7 @@ const Pharmacy = (sequelize, DataTypes, Sequelize) =>
     phone: {
       type: DataTypes.TEXT,
     },
-    name: {
+    pharmacy_name: {
       type: DataTypes.TEXT,
     },
     payload: {

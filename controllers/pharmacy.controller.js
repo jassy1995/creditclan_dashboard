@@ -243,16 +243,16 @@ const {
 //     }
 //   };
   
-//   exports.getInitialValue = async (req, res) => {
-//     try {
-//       let results = await ApprovalWorkFlow.findAll({
-//         where: { request_id: req.body.request_id },
-//       });
-//       return res.json(results);
-//     } catch (error) {
-//       return res.status(500).json({ error, message: "error occur" });
-//     }
-//   };
+  exports.getInitialValue = async (req, res) => {
+    try {
+      let results = await ApprovalWorkFlow.findAll({
+        where: { request_id: req.body.request_id },
+      });
+      return res.json(results);
+    } catch (error) {
+      return res.status(500).json({ error, message: "error occur" });
+    }
+  };
   
   exports.getSummaryOfRequestStage = async (req, res) => {
     try {
@@ -289,24 +289,24 @@ const {
     }
   };
   
-//   exports.SearchByStep = async (req, res) => {
-//     try {
-//       const result = await Restaurant.findAll({
-//         where: { step: req.body.stage },
-//         include: [
-//           {
-//             model: Agent,
-//             required: false,
-//           },
-//         ],
-//         offset: req.body.start,
-//         limit: 20,
-//       });
-//       return res.json(result);
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+  exports.SearchByStep = async (req, res) => {
+    try {
+      const result = await Pharmacy.findAll({
+        where: { step: req.body.stage },
+        include: [
+          {
+            model: Agent,
+            required: false,
+          },
+        ],
+        offset: req.body.start,
+        limit: 20,
+      });
+      return res.json(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
 //   exports.updateRestaurantRecord = async (req, res) => {
 //     try {
