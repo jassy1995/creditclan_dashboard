@@ -9,9 +9,11 @@ const {
   getProgress,
   getSummaryOfRequestStage,
   SearchByStep,
+  getAllMerchants,
 } = require("../controllers/merchant.controller");
 const router = express.Router();
 
+router.post("/api/all-merchant", getAllMerchants);
 router.post("/api/comment-merchant", commentMerchantMethod);
 router.post("/api/get-merchant-comment", getComment);
 router.post("/api/update-merchant-record", updateMerchantRecord);
