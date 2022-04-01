@@ -18,7 +18,7 @@ router.post("/api/update-merchant-record", updateMerchantRecord);
 router.post("/api/search-merchant", getSearchMerchant);
 router.post("/api/reject-request", rejectRequest);
 router.post("/api/get-progress", getProgress);
-router.post("/api/get-summary-merchant", getSummaryOfRequestStage);
+router.get("/api/get-summary-merchant", getSummaryOfRequestStage);
 
 router.post("/api/approve-merchant", preApprovalWorkFlowMerchant);
 router.post("/api/get-merchant-per-step", SearchByStep);
