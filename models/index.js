@@ -1,4 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
+const { Sequelize, DataTypes, Op } = require("sequelize");
 const dbConfig = require("../config/db.config");
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -120,7 +120,21 @@ const CommentAgent = require("./comment-agent.model")(
   Sequelize
 );
 const Agent = require("./agent.model")(sequelize, DataTypes, Sequelize);
+const Merchant = require("./merchant.model")(sequelize, DataTypes, Sequelize);
+const ApprovalWorkFlowMerchant = require("./merchant-workflow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+const CommentMerchant = require("./comment-merchant.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
 module.exports = {
+  ApprovalWorkFlowMerchant,
+  Merchant,
+  CommentMerchant,
   Agent,
   CommentAgent,
   ApprovalWorkFlowAgent,
@@ -144,5 +158,6 @@ module.exports = {
   ApprovalWorkFlow,
   ApproveFlow,
   sequelize,
+  Op,
   Sequelize,
 };
