@@ -15,12 +15,6 @@ exports.getAllMerchants = async (req, res) => {
       where: { is_declined: 0 },
       offset: req.body.start,
       limit: 20,
-      include: [
-        {
-          model: Agent,
-          required: false,
-        },
-      ],
     });
 
     return res.json(results);
