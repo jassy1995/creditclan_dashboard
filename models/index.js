@@ -172,7 +172,6 @@ module.exports = {
   ApproveFlow,
   sequelize,
   Op,
-
   Pharmacy,
   ApprovalWorkFlowPharmacy,
   CommentPharmacy,
