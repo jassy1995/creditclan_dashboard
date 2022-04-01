@@ -1,5 +1,5 @@
 const Merchant = (sequelize, DataTypes, Sequelize) =>
-  sequelize.define("merchant", {
+  sequelize.define("merchants", {
     id: {
       type: DataTypes.INTEGER,
       primaryKey: true,

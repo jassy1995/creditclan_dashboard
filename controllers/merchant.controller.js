@@ -8,6 +8,28 @@ const {
   Sequelize,
 } = require("../models");
 
+exports.getAllMerchants = async (req, res) => {
+  try {
+    const results = await Merchant.findAll({
+      order: [["created_at", "DESC"]],
+      where: { is_declined: 0 },
+      offset: req.body.start,
+      limit: 20,
+      include: [
+        {
+          model: Agent,
+          required: false,
+        },
+      ],
+    });
+
+    return res.json(results);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.SearchByStep = async (req, res) => {
   try {
     const result = await Merchant.findAll({
