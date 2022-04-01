@@ -16,6 +16,8 @@ const Restaurant = require("./restaurant.model")(
   DataTypes,
   Sequelize
 );
+
+const Pharmacy = require("./pharmacy.model")(sequelize, DataTypes, Sequelize);
 const ApproveHouse = require("./approve-house.model")(
   sequelize,
   DataTypes,
@@ -27,6 +29,11 @@ const ApproveRestaurant = require("./approve-restaurant.model")(
   Sequelize
 );
 const CommentRestaurant = require("./comment-restaurant.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+const CommentPharmacy = require("./comment-pharmacy.model")(
   sequelize,
   DataTypes,
   Sequelize
@@ -70,6 +77,12 @@ const CommentTeacherLoan = require("./comment-teacher-loan.model")(
 );
 
 const ApprovalWorkFlow = require("./approval-work-flow.model")(
+  sequelize,
+  DataTypes,
+  Sequelize
+);
+
+const ApprovalWorkFlowPharmacy = require("./approval-work-flow-pharmacy.model")(
   sequelize,
   DataTypes,
   Sequelize
@@ -159,5 +172,9 @@ module.exports = {
   ApproveFlow,
   sequelize,
   Op,
+
+  Pharmacy,
+  ApprovalWorkFlowPharmacy,
+  CommentPharmacy,
   Sequelize,
 };
