@@ -41,7 +41,6 @@ const Merchant = (sequelize, DataTypes, Sequelize) =>
     },
     picture: {
       type: DataTypes.TEXT,
-      whatsapp_no,
     },
     whatsapp_no: {
       type: DataTypes.TEXT,
