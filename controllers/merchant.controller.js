@@ -12,7 +12,7 @@ exports.getAllMerchants = async (req, res) => {
   try {
     const results = await Merchant.findAll({
       order: [["created_at", "DESC"]],
-      where: { is_approved: { [Op.ne]: -1 } },
+      where: { is_approved: { [Op.ne]: -1 }, agent_id: { [Op.ne]: null } },
       offset: req.body.start,
       limit: 20,
     });
