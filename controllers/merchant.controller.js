@@ -104,6 +104,7 @@ exports.getSearchMerchant = async (req, res) => {
     let results = await Merchant.findAll({
       where: {
         name: { [Op.like]: `%${req.body.searchItem}%` },
+        agent_id: { [Op.ne]: null },
       },
     });
     return res.json(results);
