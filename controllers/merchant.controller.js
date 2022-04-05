@@ -12,7 +12,7 @@ exports.getAllMerchants = async (req, res) => {
   try {
     const results = await Merchant.findAll({
       order: [["created_at", "DESC"]],
-      where: { is_approved: { [Op.ne]: -1 }, agent_id: { [Op.ne]: null } },
+      where: { is_approved: { [Op.ne]: -1 }, OWNER: { [Op.ne]: null } },
       offset: req.body.start,
       limit: 20,
     });
@@ -27,7 +27,7 @@ exports.getAllMerchants = async (req, res) => {
 exports.SearchByStep = async (req, res) => {
   try {
     const result = await Merchant.findAll({
-      where: { step: req.body.stage, agent_id: { [Op.ne]: null } },
+      where: { step: req.body.stage, OWNER: { [Op.ne]: null } },
       offset: req.body.start,
       limit: 20,
     });
@@ -40,7 +40,7 @@ exports.SearchByStep = async (req, res) => {
 exports.getSummaryOfRequestStage = async (req, res) => {
   try {
     let val = await Merchant.findAll({
-      where: { agent_id: { [Op.ne]: null } },
+      where: { OWNER: { [Op.ne]: null } },
       group: ["step"],
       attributes: [
         ["step", "stage"],
@@ -105,7 +105,7 @@ exports.getSearchMerchant = async (req, res) => {
     let results = await Merchant.findAll({
       where: {
         name: { [Op.like]: `%${req.body.searchItem}%` },
-        agent_id: { [Op.ne]: null },
+        OWNER: { [Op.ne]: null },
       },
     });
     return res.json(results);

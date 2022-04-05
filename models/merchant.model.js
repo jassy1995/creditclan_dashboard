@@ -266,6 +266,15 @@ const Merchant = (sequelize, DataTypes, Sequelize) =>
       step: {
         type: DataTypes.INTEGER,
       },
+      WANT_UPFRONT: {
+        type: DataTypes.INTEGER,
+      },
+      SLA_SIGNED: {
+        type: DataTypes.INTEGER,
+      },
+      OWNER: {
+        type: DataTypes.TEXT,
+      },
 
       created_at: {
         type: DataTypes.TEXT,
