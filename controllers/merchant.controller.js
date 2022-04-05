@@ -27,7 +27,7 @@ exports.getAllMerchants = async (req, res) => {
 exports.SearchByStep = async (req, res) => {
   try {
     const result = await Merchant.findAll({
-      where: { step: req.body.stage },
+      where: { step: req.body.stage, agent_id: { [Op.ne]: null } },
       offset: req.body.start,
       limit: 20,
     });
@@ -40,6 +40,7 @@ exports.SearchByStep = async (req, res) => {
 exports.getSummaryOfRequestStage = async (req, res) => {
   try {
     let val = await Merchant.findAll({
+      where: { agent_id: { [Op.ne]: null } },
       group: ["step"],
       attributes: [
         ["step", "stage"],
