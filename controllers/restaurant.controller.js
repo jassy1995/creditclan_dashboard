@@ -37,7 +37,7 @@ exports.getAllRestaurants = async (req, res) => {
     const results = await Restaurant.findAll({
       order: [["created_at", "DESC"]],
       where: { is_declined: 0 },
-      offset: req.body.start,
+      offset: Number(req.body.start),
       limit: 20,
       include: [
         {
@@ -59,7 +59,7 @@ exports.allRejectRequest = async (req, res) => {
     const results = await Restaurant.findAll({
       order: [["created_at", "DESC"]],
       where: { is_declined: 1 },
-      offset: req.body.start,
+      offset: Number(req.body.start),
       limit: 20,
       include: [
         {
@@ -134,7 +134,7 @@ exports.getAllRestaurantComment = async (req, res) => {
   try {
     try {
       let results = await CommentRestaurant.findAll({
-        offset: req.body.start,
+        offset: Number(req.body.start),
         limit: 10,
 
         where: { restaurant_id: req.body.request_id },
