@@ -54,6 +54,28 @@ exports.getAllRestaurants = async (req, res) => {
   }
 };
 
+exports.allRejectRequest = async (req, res) => {
+  try {
+    const results = await Restaurant.findAll({
+      order: [["created_at", "DESC"]],
+      where: { is_declined: 1 },
+      offset: req.body.start,
+      limit: 20,
+      include: [
+        {
+          model: Agent,
+          required: false,
+        },
+      ],
+    });
+
+    return res.json(results);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({ error, message: "error occur" });
+  }
+};
+
 exports.getSearchRestaurants = async (req, res) => {
   try {
     let results = await Restaurant.findAll({
@@ -229,6 +251,20 @@ exports.rejectRequest = async (req, res) => {
     where: { id: request_id },
   });
   return res.json({ request: rejectedRequest, message: "rejected" });
+};
+
+exports.restoreRequest = async (req, res) => {
+  const { request_id } = req.body;
+  await Restaurant.update(
+    { is_approved: 0, is_declined: 0, step: 0, code: null },
+    { where: { id: request_id } }
+  );
+  await ApprovalWorkFlow.destroy({ where: { request_id } });
+
+  const restoreRequest = await Restaurant.findOne({
+    where: { id: request_id },
+  });
+  return res.json({ request: restoreRequest, message: "restored" });
 };
 
 exports.getAllFlowRestaurantFlow = async (req, res) => {
