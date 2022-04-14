@@ -20,7 +20,7 @@ router.get("/api/fetch-summary", Controller.getSummaryOfRequestStage);
 router.post("/api/save-scrawling-record", Controller.CrawlingRecordMonitor);
 router.post("/api/get-restaurant-per-step", Controller.SearchByStep);
 router.post("/api/reject-restaurant-request", Controller.rejectRequest);
-router.get("/api/all-rejected-restaurants", Controller.allRejectRequest);
+router.post("/api/all-rejected-restaurants", Controller.allRejectRequest);
 router.post("/api/restore-restaurant-request", Controller.restoreRequest);
 
 module.exports = router;
