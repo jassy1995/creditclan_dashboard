@@ -60,6 +60,9 @@ const Restaurant = (sequelize, DataTypes, Sequelize) =>
     code: {
       type: DataTypes.TEXT,
     },
+    slug: {
+      type: DataTypes.TEXT,
+    },
     agent_id: {
       type: DataTypes.INTEGER,
     },
